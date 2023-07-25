@@ -78,35 +78,38 @@ def generate_graph_page():
         groupby_column = st.selectbox('What would you like to analyze?', groupby_column_options)
 
         if groupby_column == 'All':
+            df_all = pd.DataFrame()  # Initialize an empty DataFrame
+
             for column in groupby_column_options[1:]:
                 output_columns = ['Total Students', 'Student']
                 df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
+                df_all = pd.concat([df_all, df_grouped], axis=0)
 
-                fig = px.bar(
-                    df_grouped,
-                    x=column,
-                    y='Total Students',
-                    color='Student',
-                    color_continuous_scale=['red', 'yellow', 'green'],
-                    template='plotly_white',
-                    title=f'<b>Total Students by {column}</b>'
-                )
-                st.plotly_chart(fig)
+            fig = px.bar(
+                df_all,
+                x=groupby_column,
+                y='Total Students',
+                color='Student',
+                color_continuous_scale=['red', 'yellow', 'green'],
+                template='plotly_white',
+                title=f'<b>Total Students by {groupby_column}</b>'
+            )
+            st.plotly_chart(fig)
 
-    else:
-        output_columns = ['Total Students', 'Student']
-        df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
+        else:
+            output_columns = ['Total Students', 'Student']
+            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
 
-        fig = px.bar(
-            df_grouped,
-            x=groupby_column,
-            y='Total Students',
-            color='Student',
-            color_continuous_scale=['red', 'yellow', 'green'],
-            template='plotly_white',
-            title=f'<b>Total Students by {groupby_column}</b>'
-        )
-        st.plotly_chart(fig)
+            fig = px.bar(
+                df_grouped,
+                x=groupby_column,
+                y='Total Students',
+                color='Student',
+                color_continuous_scale=['red', 'yellow', 'green'],
+                template='plotly_white',
+                title=f'<b>Total Students by {groupby_column}</b>'
+            )
+            st.plotly_chart(fig)
 
 
 
