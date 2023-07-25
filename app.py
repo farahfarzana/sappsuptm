@@ -163,12 +163,12 @@ def predict_risk_with_mitigation_page():
                     file_path = os.path.join(downloads_path, filename)
                     df.to_excel(file_path, index=False)
 
-                with open(filename, "rb") as file:
-                    b64_data = base64.b64encode(file.read()).decode()
-                    file.close()
+                    with open(filename, "rb") as file:
+                        b64_data = base64.b64encode(file.read()).decode()
+                        file.close()
 
-                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status with Mitigation</a>'
-                st.markdown(href, unsafe_allow_html=True)
+                    href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status with Mitigation</a>'
+                    st.markdown(href, unsafe_allow_html=True)
             
 
         except Exception as e:
