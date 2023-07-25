@@ -72,7 +72,7 @@ def generate_graph_page():
     if uploaded_file:
         df = pd.read_excel(uploaded_file, engine='openpyxl')
         st.dataframe(df)
-        groupby_column = st.selectbox('What would you like to analyze?', ('Gender', 'Sponsorship', 'Status Risk', 'CGPA'))
+        groupby_column = st.selectbox('What would you like to analyze?', ('Gender', 'Sponsorship', 'GPASem1', 'GPASem2','GPASem3','GPASem4','CGPA','Status Risk'))
 
         output_columns = ['Total Students', 'Student']
         df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
