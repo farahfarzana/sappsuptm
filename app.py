@@ -89,7 +89,7 @@ def generate_graph_page():
         st.plotly_chart(fig)
 
 def display_info():
-    st.info("Click to download the report.")     
+    st.balloons()     
 
 
 def predict_risk_status_page():
@@ -111,11 +111,13 @@ def predict_risk_status_page():
 
             st.subheader("Student Status Risk")
             st.write(df)
-
-            if st.button("Download Risk Status", on_click=display_info):
+            
+            st.on_hover(display_info)
+            if st.button("Download Risk Status"):
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
+            
                 
 
                 with open(filename, "rb") as file:
