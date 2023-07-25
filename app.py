@@ -96,7 +96,7 @@ def generate_graph_page():
                     )
                     # Add CSS style to create borders around each chart
                     cols[i % 2].write(
-                        f'<style>.plotly .plotly-graph-div .nsewdrag {{ border: 1px solid black; }}</style>',
+                        f'<style>.plotly .plotly-graph-div .nsewdrag {{ border: 3px solid black; }}</style>',
                         unsafe_allow_html=True
                     )
                     cols[i % 2].plotly_chart(fig)
