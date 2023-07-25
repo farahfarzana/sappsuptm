@@ -88,8 +88,6 @@ def generate_graph_page():
         )
         st.plotly_chart(fig)
 
-def display_info():
-    st.balloons()     
 
 
 def predict_risk_status_page():
@@ -126,7 +124,6 @@ def predict_risk_status_page():
                 href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
                 st.markdown(href, unsafe_allow_html=True)
 
-            st.on_hover(display_info)
 
         except Exception as e:
             st.error("Error occurred while reading the file.")
