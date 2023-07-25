@@ -120,7 +120,7 @@ def predict_risk_status_page():
                     b64_data = base64.b64encode(file.read()).decode()
                     file.close()
 
-                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status with Mitigation</a>'
+                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
                 st.markdown(href, unsafe_allow_html=True)
 
         except Exception as e:
