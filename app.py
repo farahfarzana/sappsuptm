@@ -79,8 +79,10 @@ def generate_graph_page():
         output_columns = ['Total Students', 'Student']
 
         if groupby_column == 'All':
+            # Display all 8 graphs in 2 columns, 4 rows
+            cols = st.beta_columns(2)
             # Display all 8 graphs
-            for column in ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']:
+            for i, column in ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']:
                 if column != 'All':
                     df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
                     fig = px.bar(
@@ -92,7 +94,7 @@ def generate_graph_page():
                         template='plotly_white',
                         title=f'<b>Total Students by {column}</b>'
                     )
-                    st.plotly_chart(fig)
+                    cols[i % 2].plotly_chart(fig)
         else:
             # Display the selected graph
             df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
