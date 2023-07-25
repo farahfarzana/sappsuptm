@@ -113,6 +113,7 @@ def predict_risk_status_page():
             # Tooltip to display on hover
             st.write('<style>.tooltip-button { position: relative; display: inline-block; } .tooltip-text { visibility: hidden; width: 120px; background-color: #555; color: #fff; text-align: center; border-radius: 6px; padding: 5px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -60px; opacity: 0; transition: opacity 0.3s; } .tooltip-button:hover .tooltip-text { visibility: visible; opacity: 1; }</style>', unsafe_allow_html=True)
 
+
             # Button to trigger the download
             if st.button("Download Risk Status"):
                 timestamp = datetime.now().strftime("%d%m%H%M")
