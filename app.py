@@ -88,42 +88,7 @@ def generate_graph_page():
         )
         st.plotly_chart(fig)
 
-js_code = """
-<script>
-    function showTooltip() {
-        const tooltip = document.getElementById("tooltip");
-        tooltip.style.visibility = "visible";
-    }
 
-    function hideTooltip() {
-        const tooltip = document.getElementById("tooltip");
-        tooltip.style.visibility = "hidden";
-    }
-
-    function download_file(data, filename) {
-        // Create a Blob object from the base64 encoded data
-        const blob = new Blob([Uint8Array.from(atob(data), c => c.charCodeAt(0))], { type: 'application/octet-stream' });
-
-        // Create a URL object from the Blob
-        const url = URL.createObjectURL(blob);
-
-        // Create a link element and set its attributes
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-
-        // Append the link element to the DOM and click it programmatically
-        document.body.appendChild(link);
-        link.click();
-
-        // Clean up by revoking the object URL after a short delay
-        setTimeout(() => {
-            URL.revokeObjectURL(url);
-            document.body.removeChild(link);
-        }, 100);
-    }
-</script>
-"""
 
 def predict_risk_status_page():
     st.title('PREDICT RISK STATUS 🎯')
@@ -144,12 +109,13 @@ def predict_risk_status_page():
 
             st.subheader("Student Status Risk")
             st.write(df)
-            
-            # Display the custom JavaScript
-            st.write(js_code, unsafe_allow_html=True)
+
+            # Tooltip to display on hover
+            st.markdown('<style>.tooltip-button:hover .tooltip-text { visibility: visible; }</style>', unsafe_allow_html=True)
+            st.write('<span class="tooltip-button">Hover over this<button class="tooltip-text">Click to download the Risk Status report</button></span>', unsafe_allow_html=True)
 
             # Button to trigger the download
-            if st.button("Download Risk Status", on_click="showTooltip()", on_click_release="hideTooltip()"):
+            if st.button("Download Risk Status"):
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
@@ -158,12 +124,8 @@ def predict_risk_status_page():
                     b64_data = base64.b64encode(file.read()).decode()
                     file.close()
 
-                # Call the JavaScript function to trigger the download
-                st.write(f'<script>download_file("{b64_data}", "{filename}")</script>', unsafe_allow_html=True)
-
-            # Tooltip to display on hover
-            st.write('<div id="tooltip" style="visibility: hidden;">Click to download the Risk Status report</div>', unsafe_allow_html=True)
-
+                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
+                st.markdown(href, unsafe_allow_html=True)
 
         except Exception as e:
             st.error("Error occurred while reading the file.")
