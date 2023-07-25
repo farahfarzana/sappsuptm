@@ -156,17 +156,17 @@ def predict_risk_with_mitigation_page():
                     if comment != 'Select Mitigation':
                         df.at[index, 'Mitigation'] = comment
 
-            if st.button("Save and Download Risk Status with Mitigation"):
-                timestamp = datetime.now().strftime("%d%m%H%M")
-                filename = f"student_riskstatuswithmitigation_{timestamp}.xlsx"
-                df.to_excel(filename, index=False)
+                if st.button("Save and Download Risk Status with Mitigation"):
+                    timestamp = datetime.now().strftime("%d%m%H%M")
+                    filename = f"student_riskstatuswithmitigation_{timestamp}.xlsx"
+                    df.to_excel(filename, index=False)
 
-            with open(filename, "rb") as file:
-                b64_data = base64.b64encode(file.read()).decode()
-                file.close()
+                with open(filename, "rb") as file:
+                    b64_data = base64.b64encode(file.read()).decode()
+                    file.close()
 
-            href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status with Mitigation</a>'
-            st.markdown(href, unsafe_allow_html=True)
+                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status with Mitigation</a>'
+                st.markdown(href, unsafe_allow_html=True)
             
 
         except Exception as e:
