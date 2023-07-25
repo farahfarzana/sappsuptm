@@ -90,22 +90,20 @@ def generate_graph_page():
 
 # Custom JavaScript code to handle the download
 js_code = """
-<script>
-    function download_file(data, filename) {
-        var link = document.createElement("a");
-        link.href = "data:application/octet-stream;base64," + data;
-        link.download = filename;
-        link.click();
-    }
+function download_file(data, filename) {
+    var link = document.createElement("a");
+    link.href = "data:application/octet-stream;base64," + data;
+    link.download = filename;
+    link.click();
+}
 
-    function showTooltip() {
-        document.getElementById("tooltip").style.visibility = "visible";
-    }
+function showTooltip() {
+    document.getElementById("tooltip").style.visibility = "visible";
+}
 
-    function hideTooltip() {
-        document.getElementById("tooltip").style.visibility = "hidden";
-    }
-</script>
+function hideTooltip() {
+    document.getElementById("tooltip").style.visibility = "hidden";
+}
 """
 
 def predict_risk_status_page():
@@ -129,8 +127,7 @@ def predict_risk_status_page():
             st.write(df)
 
             # Display the custom JavaScript
-            st.write(js_code, unsafe_allow_html=True)
-
+            st.markdown(js_code, unsafe_allow_html=True)
 
             # Button to trigger the download
             if st.button("Download Risk Status", on_click="showTooltip()", on_click_release="hideTooltip()"):
@@ -144,6 +141,12 @@ def predict_risk_status_page():
 
                 href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
                 st.markdown(href, unsafe_allow_html=True)
+
+                # Call the JavaScript function to trigger the download
+                st.markdown('<script>download_file(data, filename)</script>', unsafe_allow_html=True)
+
+                # Tooltip to display on hover
+                st.markdown('<div id="tooltip" style="visibility: hidden;">Click to download the Risk Status report</div>', unsafe_allow_html=True)
 
         except Exception as e:
             st.error("Error occurred while reading the file.")
