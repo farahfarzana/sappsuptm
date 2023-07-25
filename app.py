@@ -125,7 +125,6 @@ js_code = """
 </script>
 """
 
-
 def predict_risk_status_page():
     st.title('PREDICT RISK STATUS 🎯')
     st.write("In this page, you can:")
