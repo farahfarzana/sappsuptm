@@ -111,7 +111,7 @@ def predict_risk_status_page():
             st.write(df)
             
             
-            if st.button("Download Risk Status"):
+            if st.button("Generate Risk Status Report"):
                 
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
@@ -121,7 +121,7 @@ def predict_risk_status_page():
                     b64_data = base64.b64encode(file.read()).decode()
                     file.close()
 
-                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
+                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Generated Report</a>'
                 st.markdown(href, unsafe_allow_html=True)
 
 
