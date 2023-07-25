@@ -111,8 +111,7 @@ def predict_risk_status_page():
             st.write(df)
 
             # Tooltip to display on hover
-            st.markdown('<style>.tooltip-button:hover .tooltip-text { visibility: visible; }</style>', unsafe_allow_html=True)
-            st.write('<span class="tooltip-button">Hover over this<button class="tooltip-text">Click to download the Risk Status report</button></span>', unsafe_allow_html=True)
+            st.write('<style>.tooltip-button { position: relative; display: inline-block; } .tooltip-text { visibility: hidden; width: 120px; background-color: #555; color: #fff; text-align: center; border-radius: 6px; padding: 5px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -60px; opacity: 0; transition: opacity 0.3s; } .tooltip-button:hover .tooltip-text { visibility: visible; opacity: 1; }</style>', unsafe_allow_html=True)
 
             # Button to trigger the download
             if st.button("Download Risk Status"):
@@ -130,9 +129,6 @@ def predict_risk_status_page():
         except Exception as e:
             st.error("Error occurred while reading the file.")
 
-
-
-            
 # Connect to the SQLite database
 conn = sqlite3.connect('students.db')
 c = conn.cursor()
