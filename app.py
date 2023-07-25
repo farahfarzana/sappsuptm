@@ -88,7 +88,8 @@ def generate_graph_page():
         )
         st.plotly_chart(fig)
 
-      
+def display_info():
+    st.info("Click to download the report.")     
 
 
 def predict_risk_status_page():
@@ -112,9 +113,11 @@ def predict_risk_status_page():
             st.write(df)
 
             if st.button("Download Risk Status"):
+                display_info()
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
+                
 
                 with open(filename, "rb") as file:
                     b64_data = base64.b64encode(file.read()).decode()
