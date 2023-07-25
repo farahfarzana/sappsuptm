@@ -162,7 +162,7 @@ def predict_risk_status_page():
                 # Call the JavaScript function to trigger the download
                 st.write(f'<script>download_file("{b64_data}", "{filename}")</script>', unsafe_allow_html=True)
 
-# Tooltip to display on hover
+            # Tooltip to display on hover
             st.write('<div id="tooltip" style="visibility: hidden;">Click to download the Risk Status report</div>', unsafe_allow_html=True)
 
 
