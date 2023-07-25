@@ -159,7 +159,9 @@ def predict_risk_with_mitigation_page():
                 if st.button("Save and Download Risk Status with Mitigation"):
                     timestamp = datetime.now().strftime("%d%m%H%M")
                     filename = f"student_riskstatuswithmitigation_{timestamp}.xlsx"
-                    df.to_excel(filename, index=False)
+                    downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+                    file_path = os.path.join(downloads_path, filename)
+                    df.to_excel(file_path, index=False)
 
                 with open(filename, "rb") as file:
                     b64_data = base64.b64encode(file.read()).decode()
