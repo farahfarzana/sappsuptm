@@ -88,23 +88,7 @@ def generate_graph_page():
         )
         st.plotly_chart(fig)
 
-# Custom JavaScript code to handle the download
-js_code = """
-function download_file(data, filename) {
-    var link = document.createElement("a");
-    link.href = "data:application/octet-stream;base64," + data;
-    link.download = filename;
-    link.click();
-}
 
-function showTooltip() {
-    document.getElementById("tooltip").style.visibility = "visible";
-}
-
-function hideTooltip() {
-    document.getElementById("tooltip").style.visibility = "hidden";
-}
-"""
 
 def predict_risk_status_page():
     st.title('PREDICT RISK STATUS 🎯')
@@ -125,12 +109,10 @@ def predict_risk_status_page():
 
             st.subheader("Student Status Risk")
             st.write(df)
-
-            # Display the custom JavaScript
-            st.markdown(js_code, unsafe_allow_html=True)
-
-            # Button to trigger the download
-            if st.button("Download Risk Status", on_click="showTooltip()", on_click_release="hideTooltip()"):
+            
+            
+            if st.button("Download Risk Status"):
+                
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
@@ -142,15 +124,13 @@ def predict_risk_status_page():
                 href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
                 st.markdown(href, unsafe_allow_html=True)
 
-                # Call the JavaScript function to trigger the download
-                st.markdown('<script>download_file(data, filename)</script>', unsafe_allow_html=True)
-
-                # Tooltip to display on hover
-                st.markdown('<div id="tooltip" style="visibility: hidden;">Click to download the Risk Status report</div>', unsafe_allow_html=True)
 
         except Exception as e:
             st.error("Error occurred while reading the file.")
 
+
+
+            
 # Connect to the SQLite database
 conn = sqlite3.connect('students.db')
 c = conn.cursor()
