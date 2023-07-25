@@ -82,7 +82,7 @@ def generate_graph_page():
             # Display all 8 graphs in 2 columns, 4 rows
             cols = st.columns(2)
             # Display all 8 graphs
-            for i,column in ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']:
+            for i,column in enumerate(['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']):
                 if column != 'All':
                     df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
                     fig = px.bar(
