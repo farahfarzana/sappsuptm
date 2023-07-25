@@ -124,7 +124,7 @@ tooltip_html = """
 <script>
     function download_report() {
         // Your download logic here
-        if st.button("Download Risk Status"):
+        if tooltip("Download Risk Status"):
                 
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
