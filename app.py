@@ -127,50 +127,7 @@ def predict_risk_status_page():
             st.error("Error occurred while reading the file.")
 
 
-def predict_risk_with_mitigation_page():
-    st.title('PREDICT RISK STATUS WITH MITIGATION 🚧')
-    st.write("In this page, you can:")
-    st.write("1) Upload an excel file.")
-    st.write("2) View risk status for each student predicted by the system automatically.")
-    st.write("3) Add mitigation for high-risk students.")
-    st.write("4) Download an excel report file with predicted risk status and mitigation.")
-    st.subheader('Import your excel file below to predict risk status and provide mitigation for high risk status 👇')
-    uploaded_file = st.file_uploader('Choose a XLSX file', type='xlsx')
-    if uploaded_file:
-        try:
-            df = pd.read_excel(uploaded_file)
-            st.subheader("Original Uploaded File")
-            st.write(df)
 
-            df['Status Risk'] = df.apply(lambda row: get_risk(row['GPASem3'], row['CGPA']), axis=1)
-
-            st.subheader("Student Risk Status")
-            st.write(df)
-
-            high_risk_students = df[df['Status Risk'] == 'High Risk']
-            if not high_risk_students.empty:
-                st.subheader("Add Mitigation for High Risk Students")
-                for index, row in high_risk_students.iterrows():
-                    comment_options = ['Select Mitigation', 'Minimize total credit hours for next semester', 'Advising meeting with mentor and counselor', 'Schedule extra classes', 'Review course materials']
-                    comment = st.selectbox(f"Mitigation for {row['Student']}", comment_options, index=0)
-                    if comment != 'Select Mitigation':
-                        df.at[index, 'Mitigation'] = comment
-
-                if st.button("Save and Download Risk Status with Mitigation"):
-                    timestamp = datetime.now().strftime("%d%m%H%M")
-                    filename = f"student_riskstatus_withmitigation_{timestamp}.xlsx"
-                    df.to_excel(filename, index=False)
-
-                    with open(filename, "rb") as file:
-                        b64_data = base64.b64encode(file.read()).decode()
-                        file.close()
-
-                    href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status with Mitigation</a>'
-                    st.markdown(href, unsafe_allow_html=True)
-            
-
-        except Exception as e:
-            st.error("Error occurred while reading the file.")
             
 # Connect to the SQLite database
 conn = sqlite3.connect('students.db')
@@ -463,7 +420,6 @@ st.sidebar.title('SAPPS Menu')
 menu_options = [
     '🏠 Home',
     '🎯 Predict Risk Status',
-    '🚧 Predict Risk with Mitigation',
     '📊 Generate Graph',
     '📝 Prediction Form'
 ]
@@ -476,8 +432,6 @@ elif choice == '📊 Generate Graph':
         generate_graph_page()
 elif choice == '🎯 Predict Risk Status':
         predict_risk_status_page()
-elif choice == '🚧 Predict Risk with Mitigation':
-        predict_risk_with_mitigation_page()
 elif choice == '📝 Prediction Form':
         new_form()
 
