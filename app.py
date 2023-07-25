@@ -88,18 +88,6 @@ def generate_graph_page():
         )
         st.plotly_chart(fig)
 
-def custom_button(label):
-    button_html = f"""
-        <style>
-            .custom-button:hover {{
-                background-color: lightblue;
-                color: white;
-                cursor: pointer;
-            }}
-        </style>
-        <span class="custom-button">{label}</span>
-    """
-    st.markdown(button_html, unsafe_allow_html=True)
       
 
 
@@ -123,11 +111,11 @@ def predict_risk_status_page():
             st.subheader("Student Status Risk")
             st.write(df)
 
-            if custom_button("Download Risk Status"):
+            if st.button("Download Risk Status"):
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
-                pass
+
                 with open(filename, "rb") as file:
                     b64_data = base64.b64encode(file.read()).decode()
                     file.close()
