@@ -124,7 +124,18 @@ tooltip_html = """
 <script>
     function download_report() {
         // Your download logic here
-        alert("Download Risk Status button clicked!");
+        if st.button("Download Risk Status"):
+                
+                timestamp = datetime.now().strftime("%d%m%H%M")
+                filename = f"student_riskstatus_{timestamp}.xlsx"
+                df.to_excel(filename, index=False)
+
+                with open(filename, "rb") as file:
+                    b64_data = base64.b64encode(file.read()).decode()
+                    file.close()
+
+                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
+                st.markdown(href, unsafe_allow_html=True)
     }
 </script>
 """
@@ -151,18 +162,7 @@ def predict_risk_status_page():
             st.write(df)
             
             st.write(tooltip_html, unsafe_allow_html=True)
-            if st.button("Download Risk Status"):
-                
-                timestamp = datetime.now().strftime("%d%m%H%M")
-                filename = f"student_riskstatus_{timestamp}.xlsx"
-                df.to_excel(filename, index=False)
-
-                with open(filename, "rb") as file:
-                    b64_data = base64.b64encode(file.read()).decode()
-                    file.close()
-
-                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
-                st.markdown(href, unsafe_allow_html=True)
+            
 
 
         except Exception as e:
