@@ -92,12 +92,8 @@ def generate_graph_page():
                         color='Student',
                         color_continuous_scale=['red', 'yellow', 'green'],
                         template='plotly_white',
-                        title=f'<b>Total Students by {column}</b>'
-                    )
-                    # Add CSS style to create borders around each chart
-                    cols[i % 2].write(
-                        f'<style>.plotly .plotly-graph-div .nsewdrag {{ border: 3px solid black; }}</style>',
-                        unsafe_allow_html=True
+                        title=f'<b>Total Students by {column}</b>',
+                        barmode='stack'  # Set the barmode to 'stack' for stacked column chart
                     )
                     cols[i % 2].plotly_chart(fig)
         else:
