@@ -111,7 +111,9 @@ def generate_graph_page():
             )
             st.plotly_chart(fig)
 
-
+# Run the app
+if __name__ == "__main__":
+    generate_graph_page()
 
 def predict_risk_status_page():
     st.title('PREDICT RISK STATUS 🎯')
