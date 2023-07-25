@@ -94,6 +94,11 @@ def generate_graph_page():
                         template='plotly_white',
                         title=f'<b>Total Students by {column}</b>'
                     )
+                    # Add CSS style to create borders around each chart
+                    cols[i % 2].write(
+                        f'<style>.plotly .plotly-graph-div .nsewdrag {{ border: 1px solid black; }}</style>',
+                        unsafe_allow_html=True
+                    )
                     cols[i % 2].plotly_chart(fig)
         else:
             # Display the selected graph
