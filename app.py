@@ -74,14 +74,14 @@ def generate_graph_page():
         st.dataframe(df)
         groupby_column = st.selectbox('What would you like to analyze?', ('Gender', 'Sponsorship', 'Status Risk', 'CGPA'))
 
-        output_columns = ['Total Students', 'Student']
+        output_columns = ['No', 'IdNo']
         df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
 
         fig = px.bar(
             df_grouped,
             x=groupby_column,
-            y='Total Students',
-            color='Student',
+            y='No',
+            color='IdNo',
             color_continuous_scale=['red', 'yellow', 'green'],
             template='plotly_white',
             title=f'<b>Total Students by {groupby_column}</b>'
