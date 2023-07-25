@@ -88,7 +88,25 @@ def generate_graph_page():
         )
         st.plotly_chart(fig)
 
+# Custom JavaScript code to handle the download
+js_code = """
+<script>
+    function download_file(data, filename) {
+        var link = document.createElement("a");
+        link.href = "data:application/octet-stream;base64," + data;
+        link.download = filename;
+        link.click();
+    }
 
+    function showTooltip() {
+        document.getElementById("tooltip").style.visibility = "visible";
+    }
+
+    function hideTooltip() {
+        document.getElementById("tooltip").style.visibility = "hidden";
+    }
+</script>
+"""
 
 def predict_risk_status_page():
     st.title('PREDICT RISK STATUS 🎯')
@@ -110,12 +128,12 @@ def predict_risk_status_page():
             st.subheader("Student Status Risk")
             st.write(df)
 
-            # Tooltip to display on hover
-            st.write('<style>.tooltip-button { position: relative; display: inline-block; } .tooltip-text { visibility: hidden; width: 120px; background-color: #555; color: #fff; text-align: center; border-radius: 6px; padding: 5px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -60px; opacity: 0; transition: opacity 0.3s; } .tooltip-button:hover .tooltip-text { visibility: visible; opacity: 1; }</style>', unsafe_allow_html=True)
+            # Display the custom JavaScript
+            st.write(js_code, unsafe_allow_html=True)
 
 
             # Button to trigger the download
-            if st.button("Download Risk Status"):
+            if st.button("Download Risk Status", on_click="showTooltip()", on_click_release="hideTooltip()"):
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
