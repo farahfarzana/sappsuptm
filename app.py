@@ -119,22 +119,12 @@ tooltip_html = """
 </style>
 <div class="tooltip">
     <button class="tooltip-btn" onclick="download_report()">Get Risk Status Report</button>
-    
     <span class="tooltiptext">Click here to generate risk status report in excel file format.</span>
 </div>
 <script>
     function download_report() {
-      
-           timestamp = datetime.now().strftime("%d%m%H%M")
-            filename = f"student_riskstatus_{timestamp}.xlsx"
-            df.to_excel(filename, index=False)
-
-            with open(filename, "rb") as file:
-                b64_data = base64.b64encode(file.read()).decode()
-                file.close()
-
-            href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
-            st.markdown(href, unsafe_allow_html=True)
+        // Your download logic here
+        alert("Download Risk Status button clicked!");
     }
 </script>
 """
@@ -161,7 +151,18 @@ def predict_risk_status_page():
             st.write(df)
             
             st.write(tooltip_html, unsafe_allow_html=True)
-            
+            if st.button("Download Risk Status"):
+                
+                timestamp = datetime.now().strftime("%d%m%H%M")
+                filename = f"student_riskstatus_{timestamp}.xlsx"
+                df.to_excel(filename, index=False)
+
+                with open(filename, "rb") as file:
+                    b64_data = base64.b64encode(file.read()).decode()
+                    file.close()
+
+                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
+                st.markdown(href, unsafe_allow_html=True)
 
 
         except Exception as e:
