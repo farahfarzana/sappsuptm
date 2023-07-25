@@ -77,18 +77,35 @@ def generate_graph_page():
         groupby_column = st.selectbox('What would you like to analyze?', ('All','Gender', 'Sponsorship', 'GPASem1', 'GPASem2','GPASem3','GPASem4','CGPA','Status Risk'))
 
         output_columns = ['Total Students', 'Student']
-        df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
 
-        fig = px.bar(
-            df_grouped,
-            x=groupby_column,
-            y='Total Students',
-            color='Student',
-            color_continuous_scale=['red', 'yellow', 'green'],
-            template='plotly_white',
-            title=f'<b>Total Students by {groupby_column}</b>'
-        )
-        st.plotly_chart(fig)
+        if groupby_column == 'All':
+            # Display all 8 graphs
+            for column in ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']:
+                if column != 'All':
+                    df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
+                    fig = px.bar(
+                        df_grouped,
+                        x=column,
+                        y='Total Students',
+                        color='Student',
+                        color_continuous_scale=['red', 'yellow', 'green'],
+                        template='plotly_white',
+                        title=f'<b>Total Students by {column}</b>'
+                    )
+                    st.plotly_chart(fig)
+        else:
+            # Display the selected graph
+            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
+            fig = px.bar(
+                df_grouped,
+                x=groupby_column,
+                y='Total Students',
+                color='Student',
+                color_continuous_scale=['red', 'yellow', 'green'],
+                template='plotly_white',
+                title=f'<b>Total Students by {groupby_column}</b>'
+            )
+            st.plotly_chart(fig)
 
 
 
