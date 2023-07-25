@@ -56,7 +56,7 @@ def home_page():
     st.write("User can predict the risk status of students and add mitigation for high-risk students.")
     st.write("3) Generate Graph")
     st.write("User can generate a graph from an uploaded excel file based on the gender, sponsorship and risk status of students.")
-
+    
 def generate_graph_page():
     
     
@@ -73,47 +73,23 @@ def generate_graph_page():
     if uploaded_file:
         df = pd.read_excel(uploaded_file, engine='openpyxl')
         st.dataframe(df)
+        groupby_column = st.selectbox('What would you like to analyze?', ('Gender', 'Sponsorship', 'GPASem1', 'GPASem2','GPASem3','GPASem4','CGPA','Status Risk'))
 
-        groupby_column_options = ['All', 'Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
-        groupby_column = st.selectbox('What would you like to analyze?', groupby_column_options)
+        output_columns = ['Total Students', 'Student']
+        df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
 
-        if groupby_column == 'All':
-            df_all = pd.DataFrame()  # Initialize an empty DataFrame
+        fig = px.bar(
+            df_grouped,
+            x=groupby_column,
+            y='Total Students',
+            color='Student',
+            color_continuous_scale=['red', 'yellow', 'green'],
+            template='plotly_white',
+            title=f'<b>Total Students by {groupby_column}</b>'
+        )
+        st.plotly_chart(fig)
 
-            for column in groupby_column_options[1:]:
-                output_columns = ['Total Students', 'Student']
-                df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
-                df_all = pd.concat([df_all, df_grouped], axis=0)
 
-            fig = px.bar(
-                df_all,
-                x=groupby_column,
-                y='Total Students',
-                color='Student',
-                color_continuous_scale=['red', 'yellow', 'green'],
-                template='plotly_white',
-                title=f'<b>Total Students by {groupby_column}</b>'
-            )
-            st.plotly_chart(fig)
-
-        else:
-            output_columns = ['Total Students', 'Student']
-            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
-
-            fig = px.bar(
-                df_grouped,
-                x=groupby_column,
-                y='Total Students',
-                color='Student',
-                color_continuous_scale=['red', 'yellow', 'green'],
-                template='plotly_white',
-                title=f'<b>Total Students by {groupby_column}</b>'
-            )
-            st.plotly_chart(fig)
-
-# Run the app
-if __name__ == "__main__":
-    generate_graph_page()
 
 def predict_risk_status_page():
     st.title('PREDICT RISK STATUS 🎯')
