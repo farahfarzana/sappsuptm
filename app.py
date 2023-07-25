@@ -144,12 +144,12 @@ def predict_risk_status_page():
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
 
-            with open(filename, "rb") as file:
-                b64_data = base64.b64encode(file.read()).decode()
-                file.close()
+                with open(filename, "rb") as file:
+                    b64_data = base64.b64encode(file.read()).decode()
+                    file.close()
 
-            # Call the JavaScript function to trigger the download
-            st.write(f'<script>download_file("{b64_data}", "{filename}")</script>', unsafe_allow_html=True)
+                # Call the JavaScript function to trigger the download
+                st.write(f'<script>download_file("{b64_data}", "{filename}")</script>', unsafe_allow_html=True)
 
 
         except Exception as e:
