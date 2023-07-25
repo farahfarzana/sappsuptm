@@ -74,24 +74,24 @@ def generate_graph_page():
         df = pd.read_excel(uploaded_file, engine='openpyxl')
         st.dataframe(df)
 
-    groupby_column_options = ['All', 'Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
-    groupby_column = st.selectbox('What would you like to analyze?', groupby_column_options)
+        groupby_column_options = ['All', 'Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
+        groupby_column = st.selectbox('What would you like to analyze?', groupby_column_options)
 
-    if groupby_column == 'All':
-        for column in groupby_column_options[1:]:
-            output_columns = ['Total Students', 'Student']
-            df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
+        if groupby_column == 'All':
+            for column in groupby_column_options[1:]:
+                output_columns = ['Total Students', 'Student']
+                df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
 
-            fig = px.bar(
-                df_grouped,
-                x=column,
-                y='Total Students',
-                color='Student',
-                color_continuous_scale=['red', 'yellow', 'green'],
-                template='plotly_white',
-                title=f'<b>Total Students by {column}</b>'
-            )
-            st.plotly_chart(fig)
+                fig = px.bar(
+                    df_grouped,
+                    x=column,
+                    y='Total Students',
+                    color='Student',
+                    color_continuous_scale=['red', 'yellow', 'green'],
+                    template='plotly_white',
+                    title=f'<b>Total Students by {column}</b>'
+                )
+                st.plotly_chart(fig)
 
     else:
         output_columns = ['Total Students', 'Student']
