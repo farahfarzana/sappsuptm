@@ -88,8 +88,18 @@ def generate_graph_page():
         )
         st.plotly_chart(fig)
 
-download_js = """
+js_code = """
 <script>
+    function showTooltip() {
+        const tooltip = document.getElementById("tooltip");
+        tooltip.style.visibility = "visible";
+    }
+
+    function hideTooltip() {
+        const tooltip = document.getElementById("tooltip");
+        tooltip.style.visibility = "hidden";
+    }
+
     function download_file(data, filename) {
         // Create a Blob object from the base64 encoded data
         const blob = new Blob([Uint8Array.from(atob(data), c => c.charCodeAt(0))], { type: 'application/octet-stream' });
@@ -136,10 +146,11 @@ def predict_risk_status_page():
             st.subheader("Student Status Risk")
             st.write(df)
             
-            st.write(download_js, unsafe_allow_html=True)
+            # Display the custom JavaScript
+            st.write(js_code, unsafe_allow_html=True)
 
-        # Button to trigger the download
-            if st.button("Download Risk Status"):
+            # Button to trigger the download
+            if st.button("Download Risk Status", on_click="showTooltip()", on_click_release="hideTooltip()"):
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
@@ -150,6 +161,9 @@ def predict_risk_status_page():
 
                 # Call the JavaScript function to trigger the download
                 st.write(f'<script>download_file("{b64_data}", "{filename}")</script>', unsafe_allow_html=True)
+
+# Tooltip to display on hover
+            st.write('<div id="tooltip" style="visibility: hidden;">Click to download the Risk Status report</div>', unsafe_allow_html=True)
 
 
         except Exception as e:
