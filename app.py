@@ -127,7 +127,7 @@ def predict_risk_status_page():
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
-
+                pass
                 with open(filename, "rb") as file:
                     b64_data = base64.b64encode(file.read()).decode()
                     file.close()
