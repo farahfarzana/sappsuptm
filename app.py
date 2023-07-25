@@ -87,7 +87,47 @@ def generate_graph_page():
             title=f'<b>Total Students by {groupby_column}</b>'
         )
         st.plotly_chart(fig)
+tooltip_html = """
+<style>
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
 
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: white;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
+<div class="tooltip">
+    <button class="tooltip-btn" onclick="download_report()">Download Risk Status</button>
+    <span class="tooltiptext">Move your mouse cursor here to see info</span>
+</div>
+<script>
+    function download_report() {
+        // Your download logic here
+        alert("Download Risk Status button clicked!");
+    }
+</script>
+"""
 
 
 def predict_risk_status_page():
@@ -110,9 +150,9 @@ def predict_risk_status_page():
             st.subheader("Student Status Risk")
             st.write(df)
             
-            
+            st.write(tooltip_html, unsafe_allow_html=True)
             if st.button("Download Risk Status"):
-                st.write("Move your mouse cursor over the button to see the info.")
+                
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
