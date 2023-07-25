@@ -118,16 +118,15 @@ def predict_risk_status_page():
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
-            st.on_hover(display_info)
-            
-                
 
-            with open(filename, "rb") as file:
+                with open(filename, "rb") as file:
                     b64_data = base64.b64encode(file.read()).decode()
                     file.close()
 
-            href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
-            st.markdown(href, unsafe_allow_html=True)
+                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
+                st.markdown(href, unsafe_allow_html=True)
+
+            st.on_hover(display_info)
 
         except Exception as e:
             st.error("Error occurred while reading the file.")
