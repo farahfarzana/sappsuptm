@@ -118,8 +118,8 @@ tooltip_html = """
     }
 </style>
 <div class="tooltip">
-    <button class="tooltip-btn" onclick="download_report()">Download Risk Status</button>
-    <span class="tooltiptext">Move your mouse cursor here to see info</span>
+    <button class="tooltip-btn" onclick="download_report()">Get Risk Status Report</button>
+    <span class="tooltiptext">Click here to generate risk status report in excel file format.</span>
 </div>
 <script>
     function download_report() {
