@@ -87,44 +87,30 @@ def generate_graph_page():
             title=f'<b>Total Students by {groupby_column}</b>'
         )
         st.plotly_chart(fig)
-tooltip_html = """
-<style>
-    .tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-    }
 
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: black;
-        color: white;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -60px;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
-    }
-</style>
-<div class="tooltip">
-    <button class="tooltip-btn" onclick="download_report()">Get Risk Status Report</button>
-    <span class="tooltiptext">Click here to generate risk status report in excel file format.</span>
-</div>
+download_js = """
 <script>
-    function download_report() {
-        // Your download logic here
-        alert("Download Risk Status button clicked!");
+    function download_file(data, filename) {
+        // Create a Blob object from the base64 encoded data
+        const blob = new Blob([Uint8Array.from(atob(data), c => c.charCodeAt(0))], { type: 'application/octet-stream' });
+
+        // Create a URL object from the Blob
+        const url = URL.createObjectURL(blob);
+
+        // Create a link element and set its attributes
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+
+        // Append the link element to the DOM and click it programmatically
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up by revoking the object URL after a short delay
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+        }, 100);
     }
 </script>
 """
@@ -150,19 +136,20 @@ def predict_risk_status_page():
             st.subheader("Student Status Risk")
             st.write(df)
             
-            st.write(tooltip_html, unsafe_allow_html=True)
+            st.write(download_js, unsafe_allow_html=True)
+
+        # Button to trigger the download
             if st.button("Download Risk Status"):
-                
                 timestamp = datetime.now().strftime("%d%m%H%M")
                 filename = f"student_riskstatus_{timestamp}.xlsx"
                 df.to_excel(filename, index=False)
 
-                with open(filename, "rb") as file:
-                    b64_data = base64.b64encode(file.read()).decode()
-                    file.close()
+            with open(filename, "rb") as file:
+                b64_data = base64.b64encode(file.read()).decode()
+                file.close()
 
-                href = f'<a href="data:application/octet-stream;base64,{b64_data}" download="{filename}">Download Risk Status</a>'
-                st.markdown(href, unsafe_allow_html=True)
+            # Call the JavaScript function to trigger the download
+            st.write(f'<script>download_file("{b64_data}", "{filename}")</script>', unsafe_allow_html=True)
 
 
         except Exception as e:
