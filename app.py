@@ -73,7 +73,7 @@ def generate_graph_page():
     if uploaded_file:
         df = pd.read_excel(uploaded_file, engine='openpyxl')
         st.dataframe(df)
-
+        
         groupby_column_options = ['All', 'Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
         groupby_column = st.selectbox('What would you like to analyze?', groupby_column_options)
 
@@ -89,6 +89,27 @@ def generate_graph_page():
                 color_continuous_scale=['red', 'yellow', 'green'],
                 template='plotly_white',
                 title='<b>Total Students by Gender</b>'
+            )
+            st.plotly_chart(fig)
+            fig = px.bar(
+                df_grouped,
+                x='Sponsorship',
+                y='Total Students',
+                color='Student',
+                color_continuous_scale=['red', 'yellow', 'green'],
+                template='plotly_white',
+                title='<b>Total Students by Sponsorship</b>'
+            )
+            st.plotly_chart(fig)
+        
+            fig = px.bar(
+                df_grouped,
+                x=groupby_column,
+                y='Total Students',
+                color='Student',
+                color_continuous_scale=['red', 'yellow', 'green'],
+                template='plotly_white',
+                title=f'<b>Total Students by {groupby_column}</b>'
             )
             st.plotly_chart(fig)
 
