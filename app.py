@@ -85,6 +85,8 @@ def generate_graph_page():
         }
 
         if groupby_column == 'All':
+            # Display all 8 graphs in 2 columns, 4 rows
+            cols = st.columns(2)
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
             
             
@@ -110,7 +112,7 @@ def generate_graph_page():
                         yaxis_title='Total Students',
                         barmode='stack',
                     )
-                    st.plotly_chart(fig)
+                    cols[i % 2].plotly_chart(fig)
 
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
