@@ -85,11 +85,6 @@ def generate_graph_page():
         }
     
         if groupby_column == 'All':
-            colors = {
-            'low risk': 'green',
-            'medium risk': 'orange',
-            'high risk': 'red'
-            }
             # Display all 8 graphs in 2 columns, 4 rows
             cols = st.columns(2)
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
@@ -109,7 +104,7 @@ def generate_graph_page():
                     y=df_grouped['Total Students'],
                     text=df_grouped['Total Students'],
                     textposition='auto',
-                    marker=dict(color=[colors.get(status.lower(), 'gray') for status in df_grouped[column]]),              
+                    marker=dict(color=[colors.get(status.lower(), 'gray') for status in df_grouped[column]]),               
                       )
                 fig.add_trace(trace)
 
