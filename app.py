@@ -121,8 +121,8 @@ def generate_graph_page():
                     x=groupby_column,
                     y='Total Students',
                     color='Student',
-                    
-                    marker_color=colors[status],
+                  
+                    template='plotly_white',
                     title=f'<b>Total Students by {groupby_column}</b>'
                 )
                 
