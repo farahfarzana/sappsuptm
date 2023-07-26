@@ -83,11 +83,7 @@ def generate_graph_page():
             'Medium Risk': 'rgba(255, 165, 0, 0.8)',  # Orange color for Medium risk
             'Low Risk': 'rgba(0, 128, 0, 0.8)'       # Green color for Low risk
         }
-        colors = {
-            'Low Risk': 'green',
-            'Medium Risk': 'orange',
-            'High Risk': 'red'
-        }
+    
         if groupby_column == 'All':
             # Display all 8 graphs in 2 columns, 4 rows
             cols = st.columns(2)
@@ -106,7 +102,7 @@ def generate_graph_page():
                     y=df_grouped['Total Students'],
                     text=df_grouped['Total Students'],
                     textposition='auto',
-                    marker_color=[colors.get(status.lower(), 'gray') for status in df_grouped[column.str.lower()]], # Use default color if not found
+                    marker_color=[colors.get(status.lower(), 'gray') for status in df_grouped[column]],  # Use default color if not found
                 )
                 fig.add_trace(trace)
 
