@@ -114,17 +114,33 @@ def generate_graph_page():
                     )
                     cols[i % 2].plotly_chart(fig)
         elif groupby_column == 'Status Risk':
-        # Display the selected graph
-                df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
-                fig = px.bar(
-                    df_grouped,
-                    x=groupby_column,
-                    y='Total Students',
-                    marker_color=df_grouped[groupby_column].map(colors),
-                    title=f'<b>Total Students by {groupby_column}</b>'
-                )
-                
-                st.plotly_chart(fig)
+            # Display the selected graph
+            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
+            
+            # Define colors for each status risk category
+            color_map = {
+                'Low': 'green',
+                'Medium': 'yellow',
+                'High': 'red'
+            }
+            
+            # Map the colors to the 'Status Risk' column
+            df_grouped['Color'] = df_grouped['Status Risk'].map(color_map)
+
+            # Create a square box color indicator using choropleth
+            fig = px.choropleth(
+                df_grouped,
+                geojson=df_grouped,  # Provide the appropriate GeoJSON file or data for the specific geographic region if needed
+                locations=groupby_column,
+                color='Color',
+                color_discrete_map=color_map,  # Ensure the colors are mapped correctly
+                featureidkey="properties.name",  # Provide the appropriate feature ID key if using a GeoJSON with named properties
+                projection="mercator",  # Select the appropriate projection for your geographic region
+                template='plotly_white',
+                title=f'<b>Total Students by {groupby_column}</b>'
+            )
+
+            st.plotly_chart(fig)
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
             fig = go.Figure()
