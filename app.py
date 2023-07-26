@@ -120,9 +120,7 @@ def generate_graph_page():
                     df_grouped,
                     x=groupby_column,
                     y='Total Students',
-                    color='Student',
-                    color_continuous_scale=['red', 'yellow', 'green'],
-                    
+                    marker_color=df_grouped[groupby_column].map(colors),
                     title=f'<b>Total Students by {groupby_column}</b>'
                 )
                 
