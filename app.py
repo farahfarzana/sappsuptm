@@ -132,6 +132,7 @@ def generate_graph_page():
                 title_text="Total Students by Different Categories - Grouped Bar Chart",
                 showlegend=False,
                 height=800,  # Set a fixed height to ensure proper alignment
+                width=1200,  # Set the width to 1200 pixels for wide-screen view
                 barmode='stack',  # Set barmode to 'stack' for all graphs except 'Status Risk'
             )
             st.plotly_chart(fig)
