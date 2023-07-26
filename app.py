@@ -120,9 +120,10 @@ def generate_graph_page():
                     df_grouped,
                     x=groupby_column,
                     y='Total Students',
-                    color='Student',
-                    color_continuous_scale=['red', 'yellow', 'green'],
-                    template='plotly_white',
+                    text=df_status['Total Students'],
+                    textposition='auto',
+                    marker_color=colors[status],
+                    name=status,
                     title=f'<b>Total Students by {groupby_column}</b>'
                 )
                 st.plotly_chart(fig)
