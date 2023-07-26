@@ -118,7 +118,7 @@ def generate_graph_page():
             # Define colors for each status risk category
             color_map = {
                 'Low Risk': 'green',
-                'Medium Risk': 'yellow',
+                'Medium Risk': 'orange',
                 'High Risk': 'red'
             }
 
