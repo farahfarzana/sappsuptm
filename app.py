@@ -127,15 +127,20 @@ def generate_graph_page():
             # Map the colors to the 'Status Risk' column
             df_grouped['Color'] = df_grouped['Status Risk'].map(color_map)
 
-            # Create a square box color indicator using choropleth
-            fig = px.choropleth(
-                df_grouped,
-                geojson=df_grouped,  # Provide the appropriate GeoJSON file or data for the specific geographic region if needed
-                locations=groupby_column,
-                color='Color',
-                color_discrete_map=color_map,  # Ensure the colors are mapped correctly
-                featureidkey="properties.name",  # Provide the appropriate feature ID key if using a GeoJSON with named properties
-                projection="mercator",  # Select the appropriate projection for your geographic region
+            # Create a square box color indicator using bar chart
+            fig = go.Figure(data=[
+                go.Bar(
+                    x=df_grouped[groupby_column],
+                    y=[1] * len(df_grouped),  # All y-values are set to 1 for equal height boxes
+                    marker=dict(color=df_grouped['Color']),
+                    hoverinfo='none'  # Hide hover information if needed
+                )
+            ])
+
+            # Update the layout for a cleaner appearance
+            fig.update_layout(
+                yaxis=dict(showticklabels=False, showgrid=False),
+                showlegend=False,
                 template='plotly_white',
                 title=f'<b>Total Students by {groupby_column}</b>'
             )
