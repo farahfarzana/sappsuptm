@@ -78,6 +78,11 @@ def generate_graph_page():
         groupby_column = st.selectbox('What would you like to analyze?', ('All','Gender', 'Sponsorship', 'GPASem1', 'GPASem2','GPASem3','GPASem4','CGPA','Status Risk'))
 
         output_columns = ['Total Students', 'Student']
+        colors = {
+            'High': 'rgba(255, 0, 0, 0.8)',     # Red color for High risk
+            'Medium': 'rgba(255, 165, 0, 0.8)',  # Orange color for Medium risk
+            'Low': 'rgba(0, 128, 0, 0.8)'       # Green color for Low risk
+        }
 
         if groupby_column == 'All':
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
@@ -94,7 +99,7 @@ def generate_graph_page():
                             y=df_status['Total Students'],
                             text=df_status['Total Students'],
                             textposition='auto',
-                           
+                            marker_color=colors[status],
                             name=status,
                         )
                         fig.add_trace(trace)
