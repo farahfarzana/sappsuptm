@@ -94,7 +94,6 @@ def generate_graph_page():
                             y=df_status['Total Students'],
                             text=df_status['Total Students'],
                             textposition='auto',
-                            marker_color=colors[i % len(colors)],
                             name=status,
                         )
                         fig.add_trace(trace)
