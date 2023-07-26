@@ -79,9 +79,9 @@ def generate_graph_page():
 
         output_columns = ['Total Students', 'Student']
         colors = {
-            'High': 'rgba(255, 0, 0, 0.8)',     # Red color for High risk
-            'Medium': 'rgba(255, 165, 0, 0.8)',  # Orange color for Medium risk
-            'Low': 'rgba(0, 128, 0, 0.8)'       # Green color for Low risk
+            'High Risk': 'rgba(255, 0, 0, 0.8)',     # Red color for High risk
+            'Medium Risk': 'rgba(255, 165, 0, 0.8)',  # Orange color for Medium risk
+            'Low Risk': 'rgba(0, 128, 0, 0.8)'       # Green color for Low risk
         }
 
         if groupby_column == 'All':
