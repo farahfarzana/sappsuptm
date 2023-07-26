@@ -102,8 +102,9 @@ def generate_graph_page():
                     y=df_grouped['Total Students'],
                     text=df_grouped['Total Students'],
                     textposition='auto',
-                    marker_color=[colors.get(status.lower(), 'gray') for status in df_grouped[column]],  # Use default color if not found
-                )
+                    marker_color=colors[status],
+                    name=status,                
+                    )
                 fig.add_trace(trace)
 
                 fig.update_layout(
@@ -129,7 +130,7 @@ def generate_graph_page():
                             y=df_status['Total Students'],
                             text=df_status['Total Students'],
                             textposition='auto',
-                            marker_color=colors[status.lower()],
+                            marker_color=colors[status],
                             name=status,
                         )
                         fig.add_trace(trace)
