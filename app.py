@@ -91,8 +91,16 @@ def generate_graph_page():
             
             
             for i, column in enumerate(columns):
+            
                 if column != 'All':
-                    df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
+                    if column == 'Status Risk':
+                        # For 'Status Risk', count the occurrences of each value
+                        df_grouped = df[column].value_counts().reset_index()
+                        df_grouped.columns = [column, 'Total Students']
+                    else:
+                        # For other columns, group by both 'column' and 'Status Risk'
+                        df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
+
                     fig = go.Figure()
 
                     if column == 'Status Risk':
