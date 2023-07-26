@@ -91,47 +91,50 @@ def generate_graph_page():
             
             
             for i, column in enumerate(columns):
-            
-                if column != 'All':
-                    if column == 'Status Risk':
-                        # For 'Status Risk', count the occurrences of each value
-                        df_grouped = df[column].value_counts().reset_index()
-                        df_grouped.columns = [column, 'Total Students']
-                    else:
-                        # For other columns, group by both 'column' and 'Status Risk'
-                        df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
+                if column == 'Status Risk':
+                    # For 'Status Risk', count the occurrences of each value
+                    df_grouped = df[column].value_counts().reset_index()
+                    df_grouped.columns = [column, 'Total Students']
 
                     fig = go.Figure()
-
-                    if column == 'Status Risk':
-                        # Use normal bar graph for 'Status Risk'
-                        trace = go.Bar(
-                            x=df_grouped[column],
-                            y=df_grouped['Total Students'],
-                            text=df_grouped['Total Students'],
-                            textposition='auto',
-                            marker_color=colors['Status Risk'],
-                        )
-                        fig.add_trace(trace)
-                    else:
-                        # Use stacked column graph for other columns
-                        for status in df_grouped['Status Risk'].unique():
-                            df_status = df_grouped[df_grouped['Status Risk'] == status]
-                            trace = go.Bar(
-                                x=df_status[column],
-                                y=df_status['Total Students'],
-                                text=df_status['Total Students'],
-                                textposition='auto',
-                                marker_color=colors[status],
-                                name=status,
-                            )
-                            fig.add_trace(trace)
+                    trace = go.Bar(
+                        x=df_grouped[column],
+                        y=df_grouped['Total Students'],
+                        text=df_grouped['Total Students'],
+                        textposition='auto',
+                        marker_color=colors['Status Risk'],
+                    )
+                    fig.add_trace(trace)
 
                     fig.update_layout(
-                        title=f'<b>Total Students by {column} - {"Bar" if column == "Status Risk" else "Stacked Column"} Chart</b>',
+                        title=f'<b>Total Students by {column} - Bar Chart</b>',
                         xaxis_title=column,
                         yaxis_title='Total Students',
-                        barmode='stack' if column != 'Status Risk' else None,
+                    )
+                    cols[i % 2].plotly_chart(fig)
+
+                elif column != 'All':
+                    # For other columns, group by both 'column' and 'Status Risk'
+                    df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
+
+                    fig = go.Figure()
+                    for status in df_grouped['Status Risk'].unique():
+                        df_status = df_grouped[df_grouped['Status Risk'] == status]
+                        trace = go.Bar(
+                            x=df_status[column],
+                            y=df_status['Total Students'],
+                            text=df_status['Total Students'],
+                            textposition='auto',
+                            marker_color=colors[status],
+                            name=status,
+                        )
+                        fig.add_trace(trace)
+
+                    fig.update_layout(
+                        title=f'<b>Total Students by {column} - Stacked Column Chart</b>',
+                        xaxis_title=column,
+                        yaxis_title='Total Students',
+                        barmode='stack',
                     )
                     cols[i % 2].plotly_chart(fig)
         elif groupby_column == 'Status Risk':
