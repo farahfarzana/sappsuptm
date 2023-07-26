@@ -6,8 +6,8 @@ import base64
 from datetime import datetime
 from io import StringIO, BytesIO
 from datetime import datetime
-import plotly.graph_objects as go
 import os
+import plotly.graph_objects as go
 import sqlite3
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -83,6 +83,7 @@ def generate_graph_page():
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
             rows = len(columns) // 2 + len(columns) % 2
             
+            colors = ['rgba(44, 160, 44, 0.8)', 'rgba(255, 127, 14, 0.8)', 'rgba(31, 119, 180, 0.8)']
             figs = []
             for i, column in enumerate(columns):
                 if column != 'All':
@@ -92,7 +93,7 @@ def generate_graph_page():
                         y=df_grouped['Total Students'],
                         text=df_grouped['Total Students'],
                         textposition='auto',
-                        marker_color='rgba(44, 160, 44, 0.8)',  # Green color
+                        marker_color=colors[i % len(colors)],
                         name=column,
                     )
                     fig = go.Figure(trace)
