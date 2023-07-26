@@ -114,19 +114,48 @@ def generate_graph_page():
                     )
                     cols[i % 2].plotly_chart(fig)
         elif groupby_column == 'Status Risk':
-        # Display the selected graph
-                df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
-                fig = px.bar(
-                    df_grouped,
-                    x=groupby_column,
-                    y='Total Students',
-                    color='Student',
-                  
-                    template='plotly_white',
-                    title=f'<b>Total Students by {groupby_column}</b>'
+            # Define colors for each status risk category
+            color_map = {
+                'Low': 'green',
+                'Medium': 'yellow',
+                'High': 'red'
+            }
+
+            # Map the colors to the 'Status Risk' column
+            df['Color'] = df['Status Risk'].map(color_map)
+
+            # Create a custom discrete color scale
+            custom_color_scale = [color_map[key] for key in color_map]
+
+            # Display the selected graph
+            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
+
+            fig = go.Figure()
+
+            # Add a trace for each status risk category
+            for idx, row in df_grouped.iterrows():
+                fig.add_trace(
+                    go.Bar(
+                        x=[row[groupby_column]],
+                        y=[row['Total Students']],
+                        name=row[groupby_column],
+                        marker=dict(color=row['Color'])
+                    )
                 )
-                
-                st.plotly_chart(fig)
+
+            # Update the layout for a cleaner appearance
+            fig.update_layout(
+                showlegend=True,
+                legend=dict(
+                    title=groupby_column,
+                    traceorder='reversed',  # To show the legend items in reverse order (optional)
+                    itemsizing='constant'  # To keep the legend items' size constant (optional)
+                ),
+                template='plotly_white',
+                title=f'<b>Total Students by {groupby_column}</b>'
+            )
+
+            st.plotly_chart(fig)
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
             fig = go.Figure()
