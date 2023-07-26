@@ -6,6 +6,7 @@ import base64
 from datetime import datetime
 from io import StringIO, BytesIO
 from datetime import datetime
+import plotly.graph_objects as go
 import os
 import sqlite3
 import smtplib
@@ -81,20 +82,26 @@ def generate_graph_page():
         if groupby_column == 'All':
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
             rows = len(columns) // 2 + len(columns) % 2
+            
             figs = []
             for i, column in enumerate(columns):
                 if column != 'All':
                     df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
-                    fig = px.bar(
-                        df_grouped,
-                        x=column,
-                        y='Total Students',
-                        color='Student',
-                        color_continuous_scale=['red', 'yellow', 'green'],
-                        template='plotly_white',
-                        title=f'<b>Total Students by {column}</b>'
+                    trace = go.Bar(
+                        x=df_grouped[column],
+                        y=df_grouped['Total Students'],
+                        text=df_grouped['Total Students'],
+                        textposition='auto',
+                        marker_color='rgba(44, 160, 44, 0.8)',  # Green color
+                        name=column,
                     )
-                    fig.update_traces(barmode='stack')
+                    fig = go.Figure(trace)
+                    fig.update_layout(
+                        title=f'<b>Total Students by {column}</b>',
+                        xaxis_title=column,
+                        yaxis_title='Total Students',
+                        barmode='stack',
+                    )
                     figs.append(fig)
             
             for r in range(rows):
@@ -106,16 +113,21 @@ def generate_graph_page():
 
         else:
             df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
-            fig = px.bar(
-                df_grouped,
-                x=groupby_column,
-                y='Total Students',
-                color='Student',
-                color_continuous_scale=['red', 'yellow', 'green'],
-                template='plotly_white',
-                title=f'<b>Total Students by {groupby_column}</b>'
+            trace = go.Bar(
+                x=df_grouped[groupby_column],
+                y=df_grouped['Total Students'],
+                text=df_grouped['Total Students'],
+                textposition='auto',
+                marker_color='rgba(44, 160, 44, 0.8)',  # Green color
+                name=groupby_column,
             )
-            fig.update_traces(barmode='stack')
+            fig = go.Figure(trace)
+            fig.update_layout(
+                title=f'<b>Total Students by {groupby_column}</b>',
+                xaxis_title=groupby_column,
+                yaxis_title='Total Students',
+                barmode='stack',
+            )
             st.plotly_chart(fig)
 
 
