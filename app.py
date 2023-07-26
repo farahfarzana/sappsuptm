@@ -131,7 +131,7 @@ def generate_graph_page():
             fig.update_layout(
                 title_text="Total Students by Different Categories - Grouped Bar Chart",
                 showlegend=False,
-                height=800,  # Set a fixed height to ensure proper alignment
+                height=1000,  # Set a fixed height to ensure proper alignment
             )
             st.plotly_chart(fig)
 
