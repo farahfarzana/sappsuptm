@@ -111,7 +111,7 @@ def generate_graph_page():
                     text=df_grouped['Total Students'],
                     textposition='auto',
                     marker=dict(color=[colors_status.get(status.lower(), 'gray') for status in df_grouped[column]]), 
-                    name=column,  # Set the name for the legend              
+                                
                       )
                 fig.add_trace(trace)
 
@@ -119,7 +119,7 @@ def generate_graph_page():
                     title=f'<b>Total Students by {column} - Bar Chart</b>',
                     xaxis_title=column,
                     yaxis_title='Total Students',
-                    showlegend=True,  # Show legend for the 'Status Risk' graph
+                    showlegend=False,  # Show legend for the 'Status Risk' graph
                 )
                 cols[1].plotly_chart(fig)  # Place the 'Status Risk' graph in the second column
 
