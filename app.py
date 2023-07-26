@@ -102,25 +102,27 @@ def generate_graph_page():
                 df_grouped = df[column].value_counts().reset_index()
                 df_grouped.columns = [column, 'Total Students']
                 
-                # Add a 'Color' column to the DataFrame based on the 'Status Risk' values
-                df_grouped['Color'] = df_grouped[column].map(lambda x: colors.get(x.lower(), 'gray'))
+    
 
                 fig = go.Figure()
-                trace = go.Bar(
-                    x=df_grouped[column],
-                    y=df_grouped['Total Students'],
-                    text=df_grouped['Total Students'],
-                    textposition='auto',
-                    marker=dict(color=[colors_status.get(status.lower(), 'gray') for status in df_grouped[column]]), 
-                                
-                      )
-                fig.add_trace(trace)
+
+                for risk_level, color in colors.items():
+                    df_risk_level = df_grouped[df_grouped[column] == risk_level]
+                    trace = go.Bar(
+                        x=df_risk_level[column],
+                        y=df_risk_level['Total Students'],
+                        text=df_risk_level['Total Students'],
+                        textposition='auto',
+                        marker_color=color,
+                        name=risk_level,  # Set the name for the legend
+                        legendgroup=column,  # Group the traces under the 'Status Risk' legend
+                    )
+                    fig.add_trace(trace)
 
                 fig.update_layout(
                     title=f'<b>Total Students by {column} - Bar Chart</b>',
                     xaxis_title=column,
                     yaxis_title='Total Students',
-                    showlegend=False,  # Show legend for the 'Status Risk' graph
                 )
                 cols[1].plotly_chart(fig)  # Place the 'Status Risk' graph in the second column
 
