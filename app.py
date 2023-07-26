@@ -92,11 +92,11 @@ def generate_graph_page():
             # Handle the 'Status Risk' graph separately
             if 'Status Risk' in columns:
                 # Define the colors for each status
-                colors = {
+                colors_status = {
                     'low risk': 'green',
                     'medium risk': 'orange',
                     'high risk': 'red'
-                }
+                 }
                 column = 'Status Risk'
                 # For 'Status Risk', count the occurrences of each value
                 df_grouped = df[column].value_counts().reset_index()
@@ -110,7 +110,7 @@ def generate_graph_page():
                     y=df_grouped['Total Students'],
                     text=df_grouped['Total Students'],
                     textposition='auto',
-                    marker=dict(color=[colors.get(status.lower(), 'gray') for status in df_grouped[column]]),               
+                    marker=dict(color=[colors_status.get(status.lower(), 'gray') for status in df_grouped[column]]),               
                       )
                 fig.add_trace(trace)
 
