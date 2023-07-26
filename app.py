@@ -93,7 +93,7 @@ def generate_graph_page():
                             x=df_status[column],
                             y=df_status['Total Students'],
                             text=df_status['Total Students'],
-                            textposition='potrait',
+                            textposition='auto',
                             name=status,
                         )
                         fig.add_trace(trace)
@@ -116,7 +116,7 @@ def generate_graph_page():
                     x=df_status[groupby_column],
                     y=df_status['Total Students'],
                     text=df_status['Total Students'],
-                    textposition='auto',
+                    textposition='potrait',
                     name=status,
                 )
                 fig.add_trace(trace)
