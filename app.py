@@ -93,9 +93,12 @@ def generate_graph_page():
             for i, column in enumerate(columns):
                 if column != 'All':
                     df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
+                    # Handle duplicate columns
+                    if 'Status Risk' in df_grouped.columns:
+                        df_grouped.rename(columns={'Status Risk': 'Grouped Status Risk'}, inplace=True)
                     fig = go.Figure()
-                    for status in df_grouped['Status Risk'].unique():
-                        df_status = df_grouped[df_grouped['Status Risk'] == status]
+                    for status in df_grouped['Grouped Status Risk'].unique():
+                        df_status = df_grouped[df_grouped['Grouped Status Risk'] == status]
                         trace = go.Bar(
                             x=df_status[column],
                             y=df_status['Total Students'],
@@ -116,10 +119,13 @@ def generate_graph_page():
 
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
+            # Handle duplicate columns
+            if 'Status Risk' in df_grouped.columns:
+                df_grouped.rename(columns={'Status Risk': 'Grouped Status Risk'}, inplace=True)
             fig = go.Figure()
 
-            for status in df_grouped['Status Risk'].unique():
-                df_status = df_grouped[df_grouped['Status Risk'] == status]
+            for status in df_grouped['Grouped Status Risk'].unique():
+                df_status = df_grouped[df_grouped['Grouped Status Risk'] == status]
                 trace = go.Bar(
                     x=df_status[groupby_column],
                     y=df_status['Total Students'],
