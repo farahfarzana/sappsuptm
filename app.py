@@ -56,7 +56,7 @@ def home_page():
     st.write("2) Generate Graph")
     st.write("User can generate a graph by uploading generated excel file from 'Predict Risk Status' menu.")
     st.write("3) Prediction Form")
-    st.write("User can preditc risk status for a single student and email the prediction report in PDF format.")
+    st.write("User can predict risk status for a single student and email the prediction report in PDF format.")
     
 def generate_graph_page():
     
