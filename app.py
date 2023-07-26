@@ -53,10 +53,10 @@ def home_page():
     st.write("SAPPS provides 3 menus:")
     st.write("1) Predict Risk Status")
     st.write("User can predict the risk status of students by uploading an excel file containing students' GPA and CGPA.")
-    st.write("2) Predict Risk Status with Mitigation")
-    st.write("User can predict the risk status of students and add mitigation for high-risk students.")
-    st.write("3) Generate Graph")
-    st.write("User can generate a graph from an uploaded excel file based on the gender, sponsorship and risk status of students.")
+    st.write("2) Generate Graph")
+    st.write("User can generate a graph by uploading generated excel file from 'Predict Risk Status' menu.")
+    st.write("3) Prediction Form")
+    st.write("User can preditc risk status for a single student and email the prediction report in PDF format.")
     
 def generate_graph_page():
     
@@ -433,6 +433,7 @@ def new_form():
     st.write("In this page, you can:")
     st.write("1) Fill the form below to generate risk status for a single student.")
     st.write("2) View mitigation for risk status generated.")
+    st.write("3) Enter an email if you want to send the report in PDF format.")
   
 
     # Form inputs
