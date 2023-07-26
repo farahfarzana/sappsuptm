@@ -95,8 +95,6 @@ def generate_graph_page():
                         title=f'<b>Total Students by {column}</b>'
                         
                     )
-                    # Update the traces to stack the bars
-                    fig.update_traces(barmode='stack')
                     cols[i % 2].plotly_chart(fig)
         else:
             # Display the selected graph
@@ -110,7 +108,6 @@ def generate_graph_page():
                 template='plotly_white',
                 title=f'<b>Total Students by {groupby_column}</b>'
             )
-            fig.update_traces(barmode='stack')
             st.plotly_chart(fig)
 
 
