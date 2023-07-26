@@ -4,8 +4,6 @@ import pandas as pd
 import plotly.express as px
 import base64
 import plotly.io as pio
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
 from datetime import datetime
 from io import StringIO, BytesIO
 from datetime import datetime
