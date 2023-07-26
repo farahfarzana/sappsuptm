@@ -79,10 +79,10 @@ def generate_graph_page():
         output_columns = ['Total Students', 'Student']
 
         if groupby_column == 'All':
-            # Display all 8 graphs in 2 columns, 4 rows
-            cols = st.columns(2)
-            # Display all 8 graphs
-            for i,column in enumerate(['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']):
+            columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
+            rows = len(columns) // 2 + len(columns) % 2
+            figs = []
+            for i, column in enumerate(columns):
                 if column != 'All':
                     df_grouped = df.groupby(by=[column], as_index=False)[output_columns].count()
                     fig = px.bar(
@@ -93,11 +93,18 @@ def generate_graph_page():
                         color_continuous_scale=['red', 'yellow', 'green'],
                         template='plotly_white',
                         title=f'<b>Total Students by {column}</b>'
-                        
                     )
-                    cols[i % 2].plotly_chart(fig)
+                    fig.update_traces(barmode='stack')
+                    figs.append(fig)
+            
+            for r in range(rows):
+                cols = st.columns(2)
+                for c in range(2):
+                    index = r * 2 + c
+                    if index < len(figs):
+                        cols[c].plotly_chart(figs[index])
+
         else:
-            # Display the selected graph
             df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
             fig = px.bar(
                 df_grouped,
@@ -108,6 +115,7 @@ def generate_graph_page():
                 template='plotly_white',
                 title=f'<b>Total Students by {groupby_column}</b>'
             )
+            fig.update_traces(barmode='stack')
             st.plotly_chart(fig)
 
 
