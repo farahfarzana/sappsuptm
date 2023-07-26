@@ -91,6 +91,12 @@ def generate_graph_page():
 
             # Handle the 'Status Risk' graph separately
             if 'Status Risk' in columns:
+                # Define the colors for each status
+                colors = {
+                    'low risk': 'green',
+                    'medium risk': 'orange',
+                    'high risk': 'red'
+                }
                 column = 'Status Risk'
                 # For 'Status Risk', count the occurrences of each value
                 df_grouped = df[column].value_counts().reset_index()
