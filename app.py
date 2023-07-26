@@ -138,7 +138,9 @@ def generate_graph_page():
                         x=[row[groupby_column]],
                         y=[row['Total Students']],
                         name=row[groupby_column],
-                        marker=dict(color=row['Color'])
+                        marker=dict(color=row['Color']),
+                        text=[row['Total Students']],  # Data labels
+                        textposition='auto',  # Position of data labels ('auto' places the labels inside the bars)
                     )
                 )
 
