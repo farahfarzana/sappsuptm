@@ -6,6 +6,7 @@ import base64
 from datetime import datetime
 from io import StringIO, BytesIO
 from datetime import datetime
+from plotly.subplots import make_subplots
 import os
 import plotly.graph_objects as go
 import sqlite3
@@ -89,7 +90,6 @@ def generate_graph_page():
             cols = st.columns(2)
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
             
-            
             for i, column in enumerate(columns):
                 if column != 'All':
                     df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
@@ -113,6 +113,29 @@ def generate_graph_page():
                         barmode='stack',
                     )
                     cols[i % 2].plotly_chart(fig)
+
+        elif groupby_column == 'Status Risk':
+            # Display the selected graph
+            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
+            fig = make_subplots(specs=[[{"secondary_y": True}]])
+            trace = go.Bar(
+                x=df_grouped[groupby_column],
+                y=df_grouped['Total Students'],
+                text=df_grouped['Total Students'],
+                textposition='auto',
+                marker_color=df_grouped[groupby_column].map(colors),
+                name='Total Students',
+            )
+            fig.add_trace(trace, secondary_y=False)
+
+            fig.update_layout(
+                title=f'<b>Total Students by {groupby_column}</b>',
+                xaxis_title=groupby_column,
+                yaxis_title='Total Students',
+                legenditemsizing='constant',  # Set legend item sizing to constant for square indicators
+                barmode='stack',
+            )
+            st.plotly_chart(fig)
         elif groupby_column == 'Status Risk':
            
             # Define colors for each status risk category
