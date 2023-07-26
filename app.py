@@ -87,7 +87,7 @@ def generate_graph_page():
         if groupby_column == 'All':
             # Display all 8 graphs in 2 columns, 4 rows
             cols = st.columns(2)
-            columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
+            columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA']
             
             
             for i, column in enumerate(columns):
