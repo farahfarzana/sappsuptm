@@ -121,7 +121,7 @@ def generate_graph_page():
                     x=groupby_column,
                     y='Total Students',
                     color='Student',
-                    color_continuous_scale=['red', 'yellow', 'green'],
+                    
                     marker_color=colors[status],
                     title=f'<b>Total Students by {groupby_column}</b>'
                 )
