@@ -79,7 +79,7 @@ def generate_graph_page():
 
         output_columns = ['Total Students', 'Student']
 
-       if groupby_column == 'All':
+        if groupby_column == 'All':
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
             rows = len(columns) // 2 + len(columns) % 2
             
