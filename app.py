@@ -122,7 +122,7 @@ def generate_graph_page():
                     y='Total Students',
                     color='Student',
                     color_continuous_scale=['red', 'yellow', 'green'],
-                    template='plotly_white',
+                    
                     title=f'<b>Total Students by {groupby_column}</b>'
                 )
                 
