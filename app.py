@@ -6,6 +6,7 @@ import base64
 from datetime import datetime
 from io import StringIO, BytesIO
 from datetime import datetime
+from plotly.subplots import make_subplots
 import os
 import plotly.graph_objects as go
 import sqlite3
@@ -85,32 +86,34 @@ def generate_graph_page():
         }
 
         if groupby_column == 'All':
-            columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
-            
-            
-            for i, column in enumerate(columns):
-                if column != 'All':
-                    df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
-                    fig = go.Figure()
-                    for status in df_grouped['Status Risk'].unique():
-                        df_status = df_grouped[df_grouped['Status Risk'] == status]
-                        trace = go.Bar(
-                            x=df_status[column],
-                            y=df_status['Total Students'],
-                            text=df_status['Total Students'],
-                            textposition='auto',
-                            marker_color=colors[status],
-                            name=status,
-                        )
-                        fig.add_trace(trace)
+            columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA']
 
-                    fig.update_layout(
-                        title=f'<b>Total Students by {column} - Stacked Column Chart</b>',
-                        xaxis_title=column,
-                        yaxis_title='Total Students',
-                        barmode='stack',
+            rows = 4
+            cols = 2
+            fig = make_subplots(rows=rows, cols=cols, subplot_titles=columns)
+
+            for i, column in enumerate(columns):
+                row = (i // cols) + 1
+                col = (i % cols) + 1
+
+                df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
+                for status in df_grouped['Status Risk'].unique():
+                    df_status = df_grouped[df_grouped['Status Risk'] == status]
+                    trace = go.Bar(
+                        x=df_status[column],
+                        y=df_status['Total Students'],
+                        text=df_status['Total Students'],
+                        textposition='auto',
+                        marker_color=colors[status],
+                        name=status,
                     )
-                    st.plotly_chart(fig)
+                    fig.add_trace(trace, row=row, col=col)
+
+                fig.update_xaxes(title_text=column, row=row, col=col)
+                fig.update_yaxes(title_text='Total Students', row=row, col=col)
+
+            fig.update_layout(title_text="Total Students by Different Categories - Stacked Column Chart", showlegend=False)
+            st.plotly_chart(fig)
 
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
