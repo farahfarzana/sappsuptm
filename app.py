@@ -6,7 +6,6 @@ import base64
 from datetime import datetime
 from io import StringIO, BytesIO
 from datetime import datetime
-import plotly.figure_factory as ff
 import os
 import plotly.graph_objects as go
 import sqlite3
@@ -60,6 +59,8 @@ def home_page():
     st.write("User can generate a graph from an uploaded excel file based on the gender, sponsorship and risk status of students.")
     
 def generate_graph_page():
+    
+    
     st.title('GENERATE GRAPH 📈')
     st.write("In this page, you can:")
     st.write("1) Upload an excel file.")
@@ -84,34 +85,34 @@ def generate_graph_page():
         }
 
         if groupby_column == 'All':
+            # Display all 8 graphs in 2 columns, 4 rows
+            cols = st.columns(2)
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
-            for column in columns:
+            
+            
+            for i, column in enumerate(columns):
                 if column != 'All':
                     df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
-                    fig = ff.create_2d_density(
-                        x=df_grouped[column],
-                        y=df_grouped['Total Students'],
-                        colorscale=colors,
-                        hist_color='rgba(0,0,0,0)',
-                        point_size=3,
-                        title=f'Total Students by {column} - Stacked Column Chart',
-                        xlabel=column,
-                        ylabel='Total Students',
-                    )
+                    fig = go.Figure()
+                    for status in df_grouped['Status Risk'].unique():
+                        df_status = df_grouped[df_grouped['Status Risk'] == status]
+                        trace = go.Bar(
+                            x=df_status[column],
+                            y=df_status['Total Students'],
+                            text=df_status['Total Students'],
+                            textposition='auto',
+                            marker_color=colors[status],
+                            name=status,
+                        )
+                        fig.add_trace(trace)
+
                     fig.update_layout(
-                        legend_title_text='Status Risk',
-                        xaxis=dict(
-                            showline=True,
-                            showgrid=False,
-                            showticklabels=True,
-                        ),
-                        yaxis=dict(
-                            showline=True,
-                            showgrid=False,
-                            showticklabels=True,
-                        ),
+                        title=f'<b>Total Students by {column} - Stacked Column Chart</b>',
+                        xaxis_title=column,
+                        yaxis_title='Total Students',
+                        barmode='stack',
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    cols[i % 2].plotly_chart(fig)
 
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
@@ -135,7 +136,7 @@ def generate_graph_page():
                 yaxis_title='Total Students',
                 barmode='stack',
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig)
 
 
 
