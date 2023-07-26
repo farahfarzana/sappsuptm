@@ -59,8 +59,6 @@ def home_page():
     st.write("User can generate a graph from an uploaded excel file based on the gender, sponsorship and risk status of students.")
     
 def generate_graph_page():
-    
-    
     st.title('GENERATE GRAPH 📈')
     st.write("In this page, you can:")
     st.write("1) Upload an excel file.")
@@ -85,12 +83,8 @@ def generate_graph_page():
         }
 
         if groupby_column == 'All':
-            # Display all 8 graphs in 2 columns, 4 rows
-            cols = st.columns(2)
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
-            
-            
-            for i, column in enumerate(columns):
+            for column in columns:
                 if column != 'All':
                     df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
                     fig = go.Figure()
@@ -107,12 +101,11 @@ def generate_graph_page():
                         fig.add_trace(trace)
 
                     fig.update_layout(
-                        title=f'<b>Total Students by {column} - Stacked Column Chart</b>',
+                        title=f'<b>Total Students by {column} - Grouped Bar Chart</b>',
                         xaxis_title=column,
                         yaxis_title='Total Students',
-                        barmode='stack',
                     )
-                    cols[i % 2].plotly_chart(fig)
+                    st.plotly_chart(fig)
 
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
