@@ -114,38 +114,19 @@ def generate_graph_page():
                     )
                     cols[i % 2].plotly_chart(fig)
         elif groupby_column == 'Status Risk':
-            # Display the selected graph
-            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
-            
-            # Define colors for each status risk category
-            color_map = {
-                'Low Risk': 'green',
-                'Medium Risk': 'yellow',
-                'High Risk': 'red'
-            }
-            
-            # Map the colors to the 'Status Risk' column
-            df_grouped['Color'] = df_grouped['Status Risk'].map(color_map)
-
-            # Create a square box color indicator using bar chart
-            fig = go.Figure(data=[
-                go.Bar(
-                    x=df_grouped[groupby_column],
-                    y=[1] * len(df_grouped),  # All y-values are set to 1 for equal height boxes
-                    marker=dict(color=df_grouped['Color']),
-                    hoverinfo='none'  # Hide hover information if needed
+        # Display the selected graph
+                df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
+                fig = px.bar(
+                    df_grouped,
+                    x=groupby_column,
+                    y='Total Students',
+                    color='Student',
+                    color_continuous_scale=['red', 'yellow', 'green'],
+                    marker_color=colors[status],
+                    title=f'<b>Total Students by {groupby_column}</b>'
                 )
-            ])
-
-            # Update the layout for a cleaner appearance
-            fig.update_layout(
-                yaxis=dict(showticklabels=False, showgrid=False),
-                showlegend=False,
-                template='plotly_white',
-                title=f'<b>Total Students by {groupby_column}</b>'
-            )
-
-            st.plotly_chart(fig)
+                
+                st.plotly_chart(fig)
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
             fig = go.Figure()
