@@ -81,7 +81,7 @@ def generate_graph_page():
 
         if groupby_column == 'All':
             columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
-            colors = ['rgba(44, 160, 44, 0.8)', 'rgba(255, 127, 14, 0.8)', 'rgba(31, 119, 180, 0.8)']
+            
             
             for i, column in enumerate(columns):
                 if column != 'All':
@@ -94,6 +94,7 @@ def generate_graph_page():
                             y=df_status['Total Students'],
                             text=df_status['Total Students'],
                             textposition='auto',
+                           
                             name=status,
                         )
                         fig.add_trace(trace)
@@ -116,7 +117,7 @@ def generate_graph_page():
                     x=df_status[groupby_column],
                     y=df_status['Total Students'],
                     text=df_status['Total Students'],
-                    textposition='outside',
+                    textposition='auto',
                     name=status,
                 )
                 fig.add_trace(trace)
