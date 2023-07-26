@@ -110,7 +110,7 @@ def generate_graph_page():
                     xaxis_title=column,
                     yaxis_title='Total Students',
                 )
-                cols[0].plotly_chart(fig)
+                cols[1].plotly_chart(fig)  # Place the 'Status Risk' graph in the second column
 
                 # Remove 'Status Risk' from the columns list
                 columns = [col for col in columns if col != 'Status Risk']
@@ -140,6 +140,10 @@ def generate_graph_page():
                         barmode='stack',
                     )
                     cols[i % 2].plotly_chart(fig)
+
+            # If 'Status Risk' graph is present, add an empty chart in the last column and row to maintain layout
+            if 'Status Risk' in columns:
+                cols[-1].empty()
         elif groupby_column == 'Status Risk':
            
             # Define colors for each status risk category
