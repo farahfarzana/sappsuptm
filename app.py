@@ -114,6 +114,7 @@ def generate_graph_page():
                     )
                     cols[i % 2].plotly_chart(fig)
         elif groupby_column == 'Status Risk':
+           
             # Define colors for each status risk category
             color_map = {
                 'Low': 'green',
@@ -124,11 +125,9 @@ def generate_graph_page():
             # Map the colors to the 'Status Risk' column
             df['Color'] = df['Status Risk'].map(color_map)
 
-            # Create a custom discrete color scale
-            custom_color_scale = [color_map[key] for key in color_map]
-
             # Display the selected graph
-            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
+            df_grouped = df.groupby(by=[groupby_column], as_index=False)['Total Students'].count()
+            df_grouped['Color'] = df_grouped[groupby_column].map(color_map)
 
             fig = go.Figure()
 
