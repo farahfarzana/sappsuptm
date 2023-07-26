@@ -83,7 +83,11 @@ def generate_graph_page():
             'Medium Risk': 'rgba(255, 165, 0, 0.8)',  # Orange color for Medium risk
             'Low Risk': 'rgba(0, 128, 0, 0.8)'       # Green color for Low risk
         }
-
+        colors = {
+            'Low Risk': 'green',
+            'Medium Risk': 'orange',
+            'High Risk': 'red'
+        }
         if groupby_column == 'All':
             # Display all 8 graphs in 2 columns, 4 rows
             cols = st.columns(2)
