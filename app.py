@@ -101,8 +101,9 @@ def generate_graph_page():
                 # For 'Status Risk', count the occurrences of each value
                 df_grouped = df[column].value_counts().reset_index()
                 df_grouped.columns = [column, 'Total Students']
+                
                 # Add a 'Color' column to the DataFrame based on the 'Status Risk' values
-
+                df_grouped['Color'] = df_grouped[column].map(lambda x: colors.get(x.lower(), 'gray'))
 
                 fig = go.Figure()
                 trace = go.Bar(
