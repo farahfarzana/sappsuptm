@@ -116,7 +116,7 @@ def generate_graph_page():
         elif groupby_column == 'Status Risk':
         # Display the selected graph
                 df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
-                fig = px.bar(
+                trace = go.Bar(
                     df_grouped,
                     x=groupby_column,
                     y='Total Students',
