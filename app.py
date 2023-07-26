@@ -6,7 +6,6 @@ import base64
 from datetime import datetime
 from io import StringIO, BytesIO
 from datetime import datetime
-from plotly.subplots import make_subplots
 import os
 import plotly.graph_objects as go
 import sqlite3
@@ -114,27 +113,20 @@ def generate_graph_page():
                         barmode='stack',
                     )
                     cols[i % 2].plotly_chart(fig)
-         # Display the selected graph
-            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
-            fig = make_subplots(specs=[[{"secondary_y": True}]])
-            trace = go.Bar(
-                x=df_grouped[groupby_column],
-                y=df_grouped['Total Students'],
-                text=df_grouped['Total Students'],
-                textposition='auto',
-                marker_color=df_grouped[groupby_column].map(colors),
-                name='Total Students',
-            )
-            fig.add_trace(trace, secondary_y=False)
-
-            fig.update_layout(
-                title=f'<b>Total Students by {groupby_column}</b>',
-                xaxis_title=groupby_column,
-                yaxis_title='Total Students',
-                legenditemsizing='constant',  # Set legend item sizing to constant for square indicators
-                barmode='stack',
-            )
-            st.plotly_chart(fig)
+        elif groupby_column == 'Status Risk':
+        # Display the selected graph
+                df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
+                fig = px.bar(
+                    df_grouped,
+                    x=groupby_column,
+                    y='Total Students',
+                    color='Student',
+                    color_continuous_scale=['red', 'yellow', 'green'],
+                    template='plotly_white',
+                    title=f'<b>Total Students by {groupby_column}</b>'
+                )
+                
+                st.plotly_chart(fig)
         else:
             df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
             fig = go.Figure()
