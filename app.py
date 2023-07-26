@@ -113,18 +113,22 @@ def generate_graph_page():
                         cols[c].plotly_chart(figs[index])
 
         else:
-            df_grouped = df.groupby(by=[groupby_column], as_index=False)[output_columns].count()
-            trace = go.Bar(
-                x=df_grouped[groupby_column],
-                y=df_grouped['Total Students'],
-                text=df_grouped['Total Students'],
-                textposition='auto',
-                marker_color='rgba(44, 160, 44, 0.8)',  # Green color
-                name=groupby_column,
-            )
-            fig = go.Figure(trace)
+            df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
+            fig = go.Figure()
+
+            for status in df_grouped['Status Risk'].unique():
+                df_status = df_grouped[df_grouped['Status Risk'] == status]
+                trace = go.Bar(
+                    x=df_status[groupby_column],
+                    y=df_status['Total Students'],
+                    text=df_status['Total Students'],
+                    textposition='auto',
+                    name=status,
+                )
+                fig.add_trace(trace)
+
             fig.update_layout(
-                title=f'<b>Total Students by {groupby_column}</b>',
+                title=f'<b>Total Students by {groupby_column} - Stacked Column Chart</b>',
                 xaxis_title=groupby_column,
                 yaxis_title='Total Students',
                 barmode='stack',
