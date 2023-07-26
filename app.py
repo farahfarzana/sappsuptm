@@ -151,7 +151,6 @@ def generate_graph_page():
                     )
                     cols[i % 2].plotly_chart(fig)
 
-            
         elif groupby_column == 'Status Risk':
            
             # Define colors for each status risk category
