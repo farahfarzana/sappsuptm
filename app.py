@@ -58,9 +58,9 @@ def home_page():
     st.write("3) Generate Graph")
     st.write("User can generate a graph from an uploaded excel file based on the gender, sponsorship and risk status of students.")
     
+from plotly.subplots import make_subplots
+
 def generate_graph_page():
-    
-    
     st.title('GENERATE GRAPH 📈')
     st.write("In this page, you can:")
     st.write("1) Upload an excel file.")
@@ -87,18 +87,14 @@ def generate_graph_page():
         if groupby_column == 'All':
             # Display all 8 graphs in 2 columns, 4 rows
             cols = st.columns(2)
-            columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
+            columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA']
             
-            
+            fig = make_subplots(rows=2, cols=4, subplot_titles=columns)
+
             for i, column in enumerate(columns):
                 if column != 'All':
-                    df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
-                    # Handle duplicate columns
-                    if 'Status Risk' in df_grouped.columns:
-                        df_grouped.rename(columns={'Status Risk': 'Grouped Status Risk'}, inplace=True)
-                    fig = go.Figure()
-                    for status in df_grouped['Grouped Status Risk'].unique():
-                        df_status = df_grouped[df_grouped['Grouped Status Risk'] == status]
+                    for status in df['Status Risk'].unique():
+                        df_status = df[df['Status Risk'] == status]
                         trace = go.Bar(
                             x=df_status[column],
                             y=df_status['Total Students'],
@@ -107,25 +103,19 @@ def generate_graph_page():
                             marker_color=colors[status],
                             name=status,
                         )
-                        fig.add_trace(trace)
+                        fig.add_trace(trace, row=(i // 4) + 1, col=(i % 4) + 1)
 
-                    fig.update_layout(
-                        title=f'<b>Total Students by {column} - Stacked Column Chart</b>',
-                        xaxis_title=column,
-                        yaxis_title='Total Students',
-                        barmode='stack',
-                    )
-                    cols[i % 2].plotly_chart(fig)
+            fig.update_layout(
+                title=f'<b>Total Students by {groupby_column} - Stacked Column Chart</b>',
+                showlegend=False,
+            )
+            st.plotly_chart(fig)
 
         else:
-            df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
-            # Handle duplicate columns
-            if 'Status Risk' in df_grouped.columns:
-                df_grouped.rename(columns={'Status Risk': 'Grouped Status Risk'}, inplace=True)
-            fig = go.Figure()
+            fig = make_subplots(rows=1, cols=1)
 
-            for status in df_grouped['Grouped Status Risk'].unique():
-                df_status = df_grouped[df_grouped['Grouped Status Risk'] == status]
+            for status in df['Status Risk'].unique():
+                df_status = df[df['Status Risk'] == status]
                 trace = go.Bar(
                     x=df_status[groupby_column],
                     y=df_status['Total Students'],
@@ -140,7 +130,7 @@ def generate_graph_page():
                 title=f'<b>Total Students by {groupby_column} - Stacked Column Chart</b>',
                 xaxis_title=groupby_column,
                 yaxis_title='Total Students',
-                barmode='stack',
+                showlegend=True,
             )
             st.plotly_chart(fig)
 
