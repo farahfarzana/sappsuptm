@@ -3,6 +3,9 @@ from fpdf import FPDF
 import pandas as pd
 import plotly.express as px
 import base64
+import plotly.io as pio
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 from datetime import datetime
 from io import StringIO, BytesIO
 from datetime import datetime
@@ -153,6 +156,19 @@ def generate_graph_page():
             # If 'Status Risk' graph is present, add an empty chart in the last column and row to maintain layout
             if 'Status Risk' in columns:
                 cols[-1].empty()
+            
+                    # Download button to save all figures as a PDF
+            buffer = BytesIO()
+            pio.write_image(all_figures, buffer, format='png', scale=1.5)
+            pdf_canvas = canvas.Canvas("all_graphs.pdf", pagesize=letter)
+            pdf_canvas.drawImage(ImageReader(buffer), 50, 400, width=500, height=350)
+            pdf_canvas.save()
+
+            st.download_button(
+                label="Download All Graphs (PDF)",
+                data=open("all_graphs.pdf", "rb"),
+                file_name="all_graphs.pdf",
+            )
         elif groupby_column == 'Status Risk':
            
             # Define colors for each status risk category
