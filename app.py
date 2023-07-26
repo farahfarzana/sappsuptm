@@ -150,14 +150,7 @@ def generate_graph_page():
                         barmode='stack',
                     )
                     cols[i % 2].plotly_chart(fig)
-                    # Download button to save each figure as a PNG image
-                    buffer = BytesIO()
-                    pio.write_image(fig, buffer, format='png', scale=2)
-                    st.download_button(
-                        label=f"Download {column} Graph (PNG)",
-                        data=buffer.getvalue(),
-                        file_name=f"{column.lower()}_graph.png",
-                    )
+                    
 
         elif groupby_column == 'Status Risk':
            
