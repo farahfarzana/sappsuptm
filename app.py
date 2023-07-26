@@ -120,11 +120,18 @@ def generate_graph_page():
                     df_grouped,
                     x=groupby_column,
                     y='Total Students',
-                    text=df_status['Total Students'],
-                    textposition='auto',
-                    marker_color=colors[status],
-                    name=status,
+                    color='Student',
+                    color_continuous_scale=['red', 'yellow', 'green'],
+                    template='plotly_white',
                     title=f'<b>Total Students by {groupby_column}</b>'
+                )
+                fig.add_trace(trace)
+
+                fig.update_layout(
+                    title=f'<b>Total Students by {groupby_column}</b>',
+                    xaxis_title=groupby_column,
+                    yaxis_title='Total Students',
+                    barmode='stack',
                 )
                 st.plotly_chart(fig)
         else:
