@@ -69,7 +69,7 @@ def generate_graph_page():
     st.write("3) Download an image of the generated graph.")
     st.write("To generate a graph, please follow the excel template. Thank you 😊")
     # Provide a link to download the excel template
-    template_path = 'path_to_your_excel_template.xlsx'  # Replace 'path_to_your_excel_template.xlsx' with the actual file path
+    template_path = 'template/excel_template_graph.xlsx'  # Replace 'path_to_your_excel_template.xlsx' with the actual file path
     st.markdown(f'You can download the excel template [here]({template_path}).')
     image_path = 'images/generategraph.png'
     st.image(image_path, caption='\n\n')
