@@ -74,9 +74,10 @@ def generate_graph_page():
 
     # Provide a link to download the excel template
     template_path = 'template/excel_template_graph.xlsx'  # Replace 'path_to_your_excel_template.xlsx' with the actual file path
+    
     # Use the st.download_button function to create a download button
     button_text = 'Click here to download the excel template'
-    download_button = st.download_button(label=button_text, data=df.to_excel, file_name='excel_template_graph.xlsx')
+    download_button = st.download_button(label=button_text, data=df.to_excel, file_name='template/excel_template_graph.xlsx')
  
     # Display a message if the template has not been downloaded yet
     if download_button:
