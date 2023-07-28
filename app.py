@@ -68,11 +68,14 @@ def generate_graph_page():
     st.write("2) Choose suitable data that you want to analyze.")
     st.write("3) Download an image of the generated graph.")
     st.write("To generate a graph, please follow the excel template. Thank you 😊")
+    
+    image_path = 'images/generategraph.png'
+    st.image(image_path, caption='\n\n')
+
     # Provide a link to download the excel template
     template_path = 'template/excel_template_graph.xlsx'  # Replace 'path_to_your_excel_template.xlsx' with the actual file path
     st.markdown(f'You can download the excel template [here]({template_path}).')
-    image_path = 'images/generategraph.png'
-    st.image(image_path, caption='\n\n')
+    
     st.subheader('Import your excel file below to generate graph 👇')
     uploaded_file = st.file_uploader('Choose a XLSX file', type='xlsx')
     if uploaded_file:
