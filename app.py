@@ -74,7 +74,6 @@ def generate_graph_page():
 
         # Check if the file exists before creating the download button
     if os.path.exists(template_path):
-        st.write("Please click below to download the Excel template:")
         with open(template_path, 'rb') as f:
             st.download_button(label='Download Excel Template', data=f, file_name='template.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     else:
