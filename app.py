@@ -67,9 +67,9 @@ def generate_graph_page():
     st.write("1) Upload an excel file.")
     st.write("2) Choose suitable data that you want to analyze.")
     st.write("3) Download an image of the generated graph.")
-    st.write("To generate a graph, please follow the excel template. Thank you 😊")
+    st.write("To generate a graph, please follow the excel template as shown or you can download the excel template below. Thank you 😊")
 
-        # Provide a link to the Excel template using Markdown
+    # Provide a link to the Excel template using Markdown
     template_path = "template/excel_template_graph.xlsx"
 
         # Check if the file exists before creating the download button
