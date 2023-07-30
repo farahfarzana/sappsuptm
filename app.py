@@ -69,9 +69,15 @@ def generate_graph_page():
     st.write("3) Download an image of the generated graph.")
     st.write("To generate a graph, please follow the excel template. Thank you 😊")
 
-    # Provide a link to the Excel template using Markdown
-    template_link = "template/excel_template_graph.xlsx"
-    st.markdown("Please click [here](%s) to download the Excel template." % template_link)
+        # Provide a link to the Excel template using Markdown
+    template_path = "template/excel+template_graph.xlsx"
+
+    # Check if the file exists before creating the link
+    if os.path.exists(template_path):
+        template_link = f"file://{template_path}"
+        st.markdown("Please click [here](%s) to download the Excel template." % template_link)
+    else:
+        st.write("Oops! The Excel template file is not found at the specified path.")
     
     image_path = 'images/generategraph.png'
     st.image(image_path, caption='\n\n')
