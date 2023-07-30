@@ -70,7 +70,7 @@ def generate_graph_page():
     st.write("To generate a graph, please follow the excel template. Thank you 😊")
 
         # Provide a link to the Excel template using Markdown
-    template_path = "template/excel+template_graph.xlsx"
+    template_path = "template/excel_template_graph.xlsx"
 
     # Check if the file exists before creating the link
     if os.path.exists(template_path):
