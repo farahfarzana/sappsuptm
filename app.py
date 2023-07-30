@@ -136,6 +136,8 @@ def generate_graph_page():
 
                 # Remove 'Status Risk' from the columns list
                 columns = [col for col in columns if col != 'Status Risk']
+            else:
+                 st.write("Oops! The Excel template file should have risk status of students.")
 
             # Handle the other columns with stacked column charts
             for i, column in enumerate(columns):
