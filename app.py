@@ -239,7 +239,7 @@ def generate_graph_page():
                 )
                 st.plotly_chart(fig)
 
-        except KeyError as e:
+        except KeyError:
             st.write("Error: The uploaded Excel file does not contain the required column. Please make sure it follows the correct format. Thank you. ")
         except Exception as e:
             st.write("Error: Unable to read the uploaded Excel file. Please make sure it follows the correct format.")
