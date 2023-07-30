@@ -84,155 +84,160 @@ def generate_graph_page():
     
     st.subheader('Import your excel file below to generate graph 👇')
     uploaded_file = st.file_uploader('Choose a XLSX file', type='xlsx')
-    if uploaded_file:
-        df = pd.read_excel(uploaded_file, engine='openpyxl')
-        st.dataframe(df)
+
+    if uploaded_file is not None:
+        try:
+            df = pd.read_excel(uploaded_file, engine='openpyxl')
+            st.dataframe(df)
+            
+            groupby_column = st.selectbox('What would you like to analyze?', ('All','Gender', 'Sponsorship', 'GPASem1', 'GPASem2','GPASem3','GPASem4','CGPA','Status Risk'))
+
+            output_columns = ['Total Students', 'Student']
+            colors = {
+                'High Risk': 'rgba(255, 0, 0, 0.8)',     # Red color for High risk
+                'Medium Risk': 'rgba(255, 165, 0, 0.8)',  # Orange color for Medium risk
+                'Low Risk': 'rgba(0, 128, 0, 0.8)'       # Green color for Low risk
+            }
         
-        groupby_column = st.selectbox('What would you like to analyze?', ('All','Gender', 'Sponsorship', 'GPASem1', 'GPASem2','GPASem3','GPASem4','CGPA','Status Risk'))
+            if groupby_column == 'All':
+                # Display all 8 graphs in 2 columns, 4 rows
+                cols = st.columns(2)
+                columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
 
-        output_columns = ['Total Students', 'Student']
-        colors = {
-            'High Risk': 'rgba(255, 0, 0, 0.8)',     # Red color for High risk
-            'Medium Risk': 'rgba(255, 165, 0, 0.8)',  # Orange color for Medium risk
-            'Low Risk': 'rgba(0, 128, 0, 0.8)'       # Green color for Low risk
-        }
-    
-        if groupby_column == 'All':
-            # Display all 8 graphs in 2 columns, 4 rows
-            cols = st.columns(2)
-            columns = ['Gender', 'Sponsorship', 'GPASem1', 'GPASem2', 'GPASem3', 'GPASem4', 'CGPA', 'Status Risk']
-
-            # Handle the 'Status Risk' graph separately
-            if 'Status Risk' in columns:
-                
-                column = 'Status Risk'
-                # For 'Status Risk', count the occurrences of each value
-                df_grouped = df[column].value_counts().reset_index()
-                df_grouped.columns = [column, 'Total Students']
-                
-    
-
-                fig = go.Figure()
-
-                for risk_level, color in colors.items():
-                    df_risk_level = df_grouped[df_grouped[column] == risk_level]
-                    trace = go.Bar(
-                        x=df_risk_level[column],
-                        y=df_risk_level['Total Students'],
-                        text=df_risk_level['Total Students'],
-                        textposition='auto',
-                        marker_color=color,
-                        name=risk_level,  # Set the name for the legend
-                        legendgroup=column,  # Group the traces under the 'Status Risk' legend
-                    )
-                    fig.add_trace(trace)
-
-                fig.update_layout(
-                    title=f'<b>Total Students by {column} - Bar Chart</b>',
-                    xaxis_title=column,
-                    yaxis_title='Total Students',
-                )
-                cols[1].plotly_chart(fig)  # Place the 'Status Risk' graph in the second column
-
-                # Remove 'Status Risk' from the columns list
-                columns = [col for col in columns if col != 'Status Risk']
-            else:
-                 st.write("Oops! The Excel template file should have risk status of students.")
-
-            # Handle the other columns with stacked column charts
-            for i, column in enumerate(columns):
-                if column != 'All':
-                    df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
+                # Handle the 'Status Risk' graph separately
+                if 'Status Risk' in columns:
+                    
+                    column = 'Status Risk'
+                    # For 'Status Risk', count the occurrences of each value
+                    df_grouped = df[column].value_counts().reset_index()
+                    df_grouped.columns = [column, 'Total Students']
+                    
+        
 
                     fig = go.Figure()
-                    for status in df_grouped['Status Risk'].unique():
-                        df_status = df_grouped[df_grouped['Status Risk'] == status]
+
+                    for risk_level, color in colors.items():
+                        df_risk_level = df_grouped[df_grouped[column] == risk_level]
                         trace = go.Bar(
-                            x=df_status[column],
-                            y=df_status['Total Students'],
-                            text=df_status['Total Students'],
+                            x=df_risk_level[column],
+                            y=df_risk_level['Total Students'],
+                            text=df_risk_level['Total Students'],
                             textposition='auto',
-                            marker_color=colors[status],
-                            name=status,
+                            marker_color=color,
+                            name=risk_level,  # Set the name for the legend
+                            legendgroup=column,  # Group the traces under the 'Status Risk' legend
                         )
                         fig.add_trace(trace)
 
                     fig.update_layout(
-                        title=f'<b>Total Students by {column} - Stacked Column Chart</b>',
+                        title=f'<b>Total Students by {column} - Bar Chart</b>',
                         xaxis_title=column,
                         yaxis_title='Total Students',
-                        barmode='stack',
                     )
-                    cols[i % 2].plotly_chart(fig)
-                    
+                    cols[1].plotly_chart(fig)  # Place the 'Status Risk' graph in the second column
 
-        elif groupby_column == 'Status Risk':
-           
-            # Define colors for each status risk category
-            color_map = {
-                'Low Risk': 'green',
-                'Medium Risk': 'orange',
-                'High Risk': 'red'
-            }
+                    # Remove 'Status Risk' from the columns list
+                    columns = [col for col in columns if col != 'Status Risk']
+                
 
-            # Map the colors to the 'Status Risk' column
-            df['Color'] = df['Status Risk'].map(color_map)
+                # Handle the other columns with stacked column charts
+                for i, column in enumerate(columns):
+                    if column != 'All':
+                        df_grouped = df.groupby(by=[column, 'Status Risk'], as_index=False)[output_columns].count()
 
-            # Display the selected graph
-            df_grouped = df.groupby(by=[groupby_column], as_index=False)['Total Students'].count()
-            df_grouped['Color'] = df_grouped[groupby_column].map(color_map)
+                        fig = go.Figure()
+                        for status in df_grouped['Status Risk'].unique():
+                            df_status = df_grouped[df_grouped['Status Risk'] == status]
+                            trace = go.Bar(
+                                x=df_status[column],
+                                y=df_status['Total Students'],
+                                text=df_status['Total Students'],
+                                textposition='auto',
+                                marker_color=colors[status],
+                                name=status,
+                            )
+                            fig.add_trace(trace)
 
-            fig = go.Figure()
+                        fig.update_layout(
+                            title=f'<b>Total Students by {column} - Stacked Column Chart</b>',
+                            xaxis_title=column,
+                            yaxis_title='Total Students',
+                            barmode='stack',
+                        )
+                        cols[i % 2].plotly_chart(fig)
+                        
 
-            # Add a trace for each status risk category
-            for idx, row in df_grouped.iterrows():
-                fig.add_trace(
-                    go.Bar(
-                        x=[row[groupby_column]],
-                        y=[row['Total Students']],
-                        name=row[groupby_column],
-                        marker=dict(color=row['Color']),
-                        text=[row['Total Students']],  # Data labels
-                        textposition='auto',  # Position of data labels ('auto' places the labels inside the bars)
+            elif groupby_column == 'Status Risk':
+            
+                # Define colors for each status risk category
+                color_map = {
+                    'Low Risk': 'green',
+                    'Medium Risk': 'orange',
+                    'High Risk': 'red'
+                }
+
+                # Map the colors to the 'Status Risk' column
+                df['Color'] = df['Status Risk'].map(color_map)
+
+                # Display the selected graph
+                df_grouped = df.groupby(by=[groupby_column], as_index=False)['Total Students'].count()
+                df_grouped['Color'] = df_grouped[groupby_column].map(color_map)
+
+                fig = go.Figure()
+
+                # Add a trace for each status risk category
+                for idx, row in df_grouped.iterrows():
+                    fig.add_trace(
+                        go.Bar(
+                            x=[row[groupby_column]],
+                            y=[row['Total Students']],
+                            name=row[groupby_column],
+                            marker=dict(color=row['Color']),
+                            text=[row['Total Students']],  # Data labels
+                            textposition='auto',  # Position of data labels ('auto' places the labels inside the bars)
+                        )
                     )
+
+                # Update the layout for a cleaner appearance
+                fig.update_layout(
+                    showlegend=True,
+                    legend=dict(
+                        title=groupby_column,
+                        traceorder='reversed',  # To show the legend items in reverse order (optional)
+                        itemsizing='constant'  # To keep the legend items' size constant (optional)
+                    ),
+                    template='plotly_white',
+                    title=f'<b>Total Students by {groupby_column}</b>'
                 )
 
-            # Update the layout for a cleaner appearance
-            fig.update_layout(
-                showlegend=True,
-                legend=dict(
-                    title=groupby_column,
-                    traceorder='reversed',  # To show the legend items in reverse order (optional)
-                    itemsizing='constant'  # To keep the legend items' size constant (optional)
-                ),
-                template='plotly_white',
-                title=f'<b>Total Students by {groupby_column}</b>'
-            )
+                st.plotly_chart(fig)
+            else:
+                df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
+                fig = go.Figure()
 
-            st.plotly_chart(fig)
-        else:
-            df_grouped = df.groupby(by=[groupby_column, 'Status Risk'], as_index=False)[output_columns].count()
-            fig = go.Figure()
+                for status in df_grouped['Status Risk'].unique():
+                    df_status = df_grouped[df_grouped['Status Risk'] == status]
+                    trace = go.Bar(
+                        x=df_status[groupby_column],
+                        y=df_status['Total Students'],
+                        text=df_status['Total Students'],
+                        textposition='auto',
+                        marker_color=colors[status],
+                        name=status,
+                    )
+                    fig.add_trace(trace)
 
-            for status in df_grouped['Status Risk'].unique():
-                df_status = df_grouped[df_grouped['Status Risk'] == status]
-                trace = go.Bar(
-                    x=df_status[groupby_column],
-                    y=df_status['Total Students'],
-                    text=df_status['Total Students'],
-                    textposition='auto',
-                    marker_color=colors[status],
-                    name=status,
+                fig.update_layout(
+                    title=f'<b>Total Students by {groupby_column} - Stacked Column Chart</b>',
+                    xaxis_title=groupby_column,
+                    yaxis_title='Total Students',
+                    barmode='stack',
                 )
-                fig.add_trace(trace)
+                st.plotly_chart(fig)
 
-            fig.update_layout(
-                title=f'<b>Total Students by {groupby_column} - Stacked Column Chart</b>',
-                xaxis_title=groupby_column,
-                yaxis_title='Total Students',
-                barmode='stack',
-            )
-            st.plotly_chart(fig)
+        except Exception as e:
+            st.write("Error: Unable to read the uploaded Excel file. Please make sure it follows the correct format.")
+            st.write(e)
 
 
 
