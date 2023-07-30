@@ -284,7 +284,7 @@ def predict_risk_status_page():
 
 
         except Exception as e:
-            st.error("Error occurred while reading the file.")
+            st.error("Error occurred while reading the file. Please upload the correct Excel file. Thank you.")
 
 
 
