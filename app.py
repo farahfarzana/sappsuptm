@@ -72,10 +72,11 @@ def generate_graph_page():
         # Provide a link to the Excel template using Markdown
     template_path = "template/excel_template_graph.xlsx"
 
-    # Check if the file exists before creating the link
+        # Check if the file exists before creating the download button
     if os.path.exists(template_path):
-        template_link = f"file://{template_path}"
-        st.markdown("Please click [here](%s) to download the Excel template." % template_link)
+        st.write("Please click below to download the Excel template:")
+        with open(template_path, 'rb') as f:
+            st.download_button(label='Download Excel Template', data=f, file_name='template.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     else:
         st.write("Oops! The Excel template file is not found at the specified path.")
     
