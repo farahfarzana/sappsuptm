@@ -64,7 +64,7 @@ def generate_graph_page():
     
     st.title('GENERATE GRAPH 📈')
     st.write("In this page, you can:")
-    st.write("1) Upload an excel file.")
+    st.write("1) Upload an excel file with the risk status of students.")
     st.write("2) Choose suitable data that you want to analyze.")
     st.write("3) Download an image of the generated graph.")
     st.write("To generate a graph, please follow the excel template as shown or you can download the excel template below. Thank you 😊")
