@@ -58,6 +58,10 @@ def home_page():
     st.write("User can generate a graph by uploading generated excel file from 'Predict Risk Status' menu.")
     st.write("3) Prediction Form")
     st.write("User can predict risk status for a single student and email the prediction report in PDF format.")
+
+     # Provide a link to the user manual video using Markdown
+    video_link = "https://drive.google.com/file/d/1n2RTZwE1YPQCz3kNpdTHFXhalYhHIWXI/view?usp=sharing"
+    st.markdown(f"Please click [here](%s) to watch the user manual of this system." % video_link, unsafe_allow_html=True)
     
 def generate_graph_page():
     
