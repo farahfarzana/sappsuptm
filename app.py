@@ -80,7 +80,7 @@ def generate_graph_page():
         # Check if the file exists before creating the download button
     if os.path.exists(template_path):
         with open(template_path, 'rb') as f:
-            st.download_button(label='Download Excel Template', data=f, file_name='template.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            st.download_button(label='Download Excel Template', data=f, file_name='excel_template_graph.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     else:
         st.write("Oops! The Excel template file is not found at the specified path.")
     
@@ -261,7 +261,7 @@ def predict_risk_status_page():
         # Check if the file exists before creating the download button
     if os.path.exists(template_path):
         with open(template_path, 'rb') as f:
-            st.download_button(label='Download Excel Template', data=f, file_name='template.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            st.download_button(label='Download Excel Template', data=f, file_name='excel_template_riskstatus.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     else:
         st.write("Oops! The Excel template file is not found at the specified path.")
 
