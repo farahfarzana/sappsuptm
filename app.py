@@ -251,11 +251,11 @@ def generate_graph_page():
 def predict_risk_status_page():
     st.title('PREDICT RISK STATUS 🎯')
     st.write("In this page, you can:")
-    st.write("1) Upload an excel file contained student ID, GPA and CGPA.")
+    st.write("1) Upload an excel file contained GPA and CGPA.")
     st.write("2) View risk status for each student predicted by the system automatically.")
     st.write("3) Download the excel file with predicted risk status.")
-    st.write("You can download the excel template below. Thank you 😊")
-    # Provide a link to the Excel template using Markdown
+    st.write("You can download the excel file template below. Thank you 😊")
+    # Provide a link to the Excel file template using Markdown
     template_path = "template/excel_template_riskstatus.xlsx"
 
         # Check if the file exists before creating the download button
