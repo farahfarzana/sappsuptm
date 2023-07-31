@@ -251,7 +251,7 @@ def generate_graph_page():
 def predict_risk_status_page():
     st.title('PREDICT RISK STATUS 🎯')
     st.write("In this page, you can:")
-    st.write("1) Upload an excel file.")
+    st.write("1) Upload an excel file contained student ID, GPA and CGPA.")
     st.write("2) View risk status for each student predicted by the system automatically.")
     st.write("3) Download the excel file with predicted risk status.")
     st.subheader('Import your excel file below to predict status 👇')
