@@ -254,6 +254,17 @@ def predict_risk_status_page():
     st.write("1) Upload an excel file contained student ID, GPA and CGPA.")
     st.write("2) View risk status for each student predicted by the system automatically.")
     st.write("3) Download the excel file with predicted risk status.")
+    st.write("You can download the excel template below. Thank you 😊")
+    # Provide a link to the Excel template using Markdown
+    template_path = "template/excel_template_riskstatus.xlsx"
+
+        # Check if the file exists before creating the download button
+    if os.path.exists(template_path):
+        with open(template_path, 'rb') as f:
+            st.download_button(label='Download Excel Template', data=f, file_name='template.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    else:
+        st.write("Oops! The Excel template file is not found at the specified path.")
+
     st.subheader('Import your excel file below to predict status 👇')
     uploaded_file = st.file_uploader("Upload Excel File", type=["xls", "xlsx"])
 
