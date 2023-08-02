@@ -467,8 +467,8 @@ def export_to_pdf(data):
 
 def send_email(file_path, recipient_email, student_name):
     # Email configuration
-    sender_email = "farahfafar@gmail.com"  # Replace with your email
-    sender_password = "yueifnnonyvkpwgk"  # Replace with your email password
+    sender_email = "sappsuptm@gmail.com"  # Replace with your email
+    sender_password = "qrzfqxhnjfcaqjyj"  # Replace with your email password
     smtp_server = "smtp.gmail.com"  # Replace with your SMTP server if using a different provider
     smtp_port = 587  # Replace with your SMTP server port if using a different provider
 
