@@ -545,7 +545,7 @@ def new_form():
             else:
                 mitigation = "No mitigation needed"
                 
-            st.success(f"Prediction status for {student_name} is: {risk_status}  \n Mitigation status: {mitigation}")
+            st.success(f"Prediction status for {student_name} is: {risk_status}  \n Mitigation status: \n {mitigation}")
 
                 # Save the form data to the database
             data = {
